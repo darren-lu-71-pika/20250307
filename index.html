@@ -65,15 +65,6 @@
             font-style: italic;
         }
     </style>
-</head>
-<body>
-    <div class="chat-container">
-        <div id="messageBox" class="message-box"></div>
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="請輸入訂單編號或手機號碼">
-            <button id="sendButton" onclick="sendMessage()">送出</button>
-        </div>
-    </div>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
         let isLiffReady = false;
@@ -133,4 +124,56 @@
                 if (data && data.response) {
                     appendMessage('bot', data.response);
                 } else {
-                    appendMessage
+                    appendMessage('bot', '抱歉，沒有找到相關資訊');
+                }
+
+            } catch (error) {
+                console.error('請求錯誤:', error);
+                removeLastMessage();
+                appendMessage('bot', '抱歉，查詢時發生錯誤：' + error.message);
+            } finally {
+                sendButton.disabled = false;
+                document.getElementById('userInput').value = '';
+            }
+        }
+
+        function appendMessage(sender, text, extraClass = '') {
+            const messageBox = document.getElementById('messageBox');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message ${extraClass}`;
+            messageDiv.textContent = text;
+            messageBox.appendChild(messageDiv);
+            messageBox.scrollTop = messageBox.scrollHeight;
+        }
+
+        function removeLastMessage() {
+            const messageBox = document.getElementById('messageBox');
+            const messages = messageBox.querySelectorAll('.message');
+            if (messages.length > 0) {
+                const lastMessage = messages[messages.length - 1];
+                if (lastMessage.classList.contains('loading')) {
+                    lastMessage.remove();
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !document.getElementById('sendButton').disabled) {
+                    sendMessage();
+                }
+            });
+            initializeLiff();
+        });
+    </script>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="messageBox" class="message-box"></div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="請輸入訂單編號或手機號碼">
+            <button id="sendButton" onclick="sendMessage()">送出</button>
+        </div>
+    </div>
+</body>
+</html>
