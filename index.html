@@ -1,71 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>訂單查詢助手</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 10px;
-            font-size: 14px;
-        }
-        .chat-container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        .message-box {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-        }
-        .input-container {
-            display: flex;
-            gap: 8px;
-        }
-        input {
-            flex: 1;
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        button {
-            padding: 6px 12px;
-            background-color: #06c755;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        .message {
-            margin: 4px 0;
-            padding: 4px 8px;
-            border-radius: 4px;
-            max-width: 85%;
-            word-break: break-word;
-        }
-        .user-message {
-            background-color: #06c755;
-            color: white;
-            margin-left: auto;
-        }
-        .bot-message {
-            background-color: #f1f1f1;
-        }
-        .loading {
-            color: #666;
-            font-style: italic;
-        }
-    </style>
-</head>
+<!-- 前面的 head 和 style 部分保持不變 -->
+
 <body>
     <div class="chat-container">
         <div id="messageBox" class="message-box"></div>
@@ -86,7 +22,6 @@
 
                 if (!liff.isLoggedIn()) {
                     console.log('用戶未登入');
-                    // liff.login(); // 若需要強制登入可取消註解
                 }
             } catch (error) {
                 console.error('LIFF 初始化失敗:', error);
@@ -94,7 +29,7 @@
             }
         }
 
-        async function sendMessage() {
+        function sendMessage() {
             const userInput = document.getElementById('userInput').value.trim();
             if (!userInput) return;
 
@@ -104,41 +39,41 @@
             appendMessage('user', userInput);
             appendMessage('bot', '查詢中...', 'loading');
 
-            try {
-                const GAS_URL = 'https://script.google.com/macros/s/AKfycbzVD5DL2qHAw-BB1L7yfVbwwVjRCHyVJd1npGuq-dQndCtWcbJw-eUO-9o9FX-Y7So8oQ/exec';
-                const response = await fetch(`${GAS_URL}?query=${encodeURIComponent(userInput)}`);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const responseText = await response.text();
-                console.log('原始回應:', responseText);
-
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                } catch (jsonError) {
-                    console.error('JSON 解析錯誤:', jsonError);
-                    throw new Error('伺服器回應格式錯誤');
-                }
-
+            const GAS_URL = 'https://script.google.com/macros/s/AKfycbwQf1Wz4wKSELtIPsjtuBLOop4Di2w3eztGJlIWVj1zzA5TUrhLpxyeSXjrSpggnAwuDg/exec';
+            
+            // 創建一個新的 script 標籤
+            const script = document.createElement('script');
+            const callbackName = 'jsonpCallback_' + Date.now();
+            
+            // 定義回調函數
+            window[callbackName] = function(data) {
                 removeLastMessage();
-
                 if (data && data.response) {
                     appendMessage('bot', data.response);
                 } else {
                     appendMessage('bot', '抱歉，沒有找到相關資訊');
                 }
-
-            } catch (error) {
-                console.error('請求錯誤:', error);
-                removeLastMessage();
-                appendMessage('bot', '抱歉，查詢時發生錯誤：' + error.message);
-            } finally {
                 sendButton.disabled = false;
                 document.getElementById('userInput').value = '';
-            }
+                // 清理回調函數和 script 標籤
+                delete window[callbackName];
+                document.body.removeChild(script);
+            };
+
+            // 設置 script 的 src，添加回調參數
+            script.src = `${GAS_URL}?query=${encodeURIComponent(userInput)}&callback=${callbackName}`;
+            
+            // 處理錯誤情況
+            script.onerror = function() {
+                removeLastMessage();
+                appendMessage('bot', '抱歉，查詢時發生錯誤');
+                sendButton.disabled = false;
+                document.body.removeChild(script);
+                delete window[callbackName];
+            };
+
+            // 將 script 添加到文檔中
+            document.body.appendChild(script);
         }
 
         function appendMessage(sender, text, extraClass = '') {
