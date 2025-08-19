@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>料理訂購客服助手</title>
+    <title>廚師AI客服助手</title>
     <style>
         :root {
             --main-color: #D32F2F;
@@ -31,22 +31,140 @@
             font-weight: bold;
             position: fixed;
             top: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .header-title {
+            flex-grow: 1;
+        }
+        
+        .header-button {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .header-button:hover {
+            background-color: var(--main-dark);
         }
 
-        .chat-container {
+        .container {
             max-width: 100%;
-            margin: 60px auto 0;
+            margin-top: 60px;
             padding: 15px;
             box-sizing: border-box;
+        }
+
+        .welcome-container {
+            text-align: center;
+            padding-top: 50px;
+        }
+        
+        .welcome-container h2 {
+            font-size: 24px;
+            color: var(--main-dark);
+        }
+        
+        .welcome-container p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .action-button {
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-button:hover {
+            background-color: var(--main-dark);
+        }
+        
+        #order-form {
+            padding-top: 30px;
+        }
+
+        .form-input-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-input-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        .form-input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input-group input:focus {
+            border-color: var(--main-color);
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: var(--main-dark);
+        }
+        
+        .submit-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .chat-interface {
+            display: none;
         }
 
         .message-box {
             height: calc(100vh - 190px);
             overflow-y: auto;
-            background-color: #f5f5f5;  /* 不使用變量，直接設定顏色 */
+            background-color: #f5f5f5;
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 12px;
@@ -65,7 +183,7 @@
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
-        input {
+        .input-container input {
             flex: 1;
             padding: 12px 15px;
             height: 50px;
@@ -77,11 +195,11 @@
             transition: border-color 0.3s;
         }
 
-        input:focus {
+        .input-container input:focus {
             border-color: var(--main-color);
         }
 
-        button {
+        .send-button {
             min-width: 90px;
             height: 50px;
             background-color: var(--main-color);
@@ -94,11 +212,11 @@
             transition: background-color 0.3s;
         }
 
-        button:hover {
+        .send-button:hover {
             background-color: var(--main-dark);
         }
 
-        button:disabled {
+        .send-button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
@@ -141,20 +259,78 @@
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        let isLiffReady = false;
+        const LIFF_ID = "2007811541-6LyX2yor";
+        // 請將以下 GAS URL 替換成你修改後的 GAS 部署 URL
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyrkZqM4Rxrm1pfEB-vW-eCcjnfijiVDMHSsoqTL-XRUB6LhOcnDMD9t131l03Oh8uJnQ/exec';
+        
+        let currentMode = 'welcome'; // welcome, order_query, recipe_question
 
         async function initializeLiff() {
             try {
-                await liff.init({ liffId: "2007811541-6LyX2yor" });
-                isLiffReady = true;
-                console.log('LIFF 初始化成功');
-
+                await liff.init({ liffId: LIFF_ID });
                 if (!liff.isLoggedIn()) {
                     console.log('用戶未登入');
                 }
+                showWelcomeScreen();
             } catch (error) {
                 console.error('LIFF 初始化失敗:', error);
-                appendMessage('bot', 'LIFF 初始化失敗，部分功能可能無法使用');
+                alert('LIFF 初始化失敗，部分功能可能無法使用');
+            }
+        }
+
+        function showWelcomeScreen() {
+            document.getElementById('welcome-screen').style.display = 'block';
+            document.getElementById('order-query-screen').style.display = 'none';
+            document.getElementById('recipe-question-screen').style.display = 'none';
+            document.getElementById('header-title').textContent = '廚師AI客服助手';
+            document.getElementById('return-button').style.display = 'none';
+            currentMode = 'welcome';
+        }
+
+        function showOrderQueryScreen() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('order-query-screen').style.display = 'block';
+            document.getElementById('recipe-question-screen').style.display = 'none';
+            document.getElementById('header-title').textContent = '訂單查詢';
+            document.getElementById('return-button').style.display = 'block';
+            document.getElementById('orderQueryResult').textContent = '';
+            currentMode = 'order_query';
+        }
+
+        function showRecipeQuestionScreen() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('order-query-screen').style.display = 'none';
+            document.getElementById('recipe-question-screen').style.display = 'block';
+            document.getElementById('header-title').textContent = '料理問題諮詢';
+            document.getElementById('return-button').style.display = 'block';
+            document.getElementById('messageBox').innerHTML = ''; // 清空聊天紀錄
+            appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？');
+            currentMode = 'recipe_question';
+        }
+
+        async function submitOrderQuery() {
+            const name = document.getElementById('orderName').value.trim();
+            const phone = document.getElementById('orderPhone').value.trim();
+            const submitButton = document.getElementById('submitOrderButton');
+
+            if (!name || !phone) {
+                alert('請同時輸入姓名與手機號碼');
+                return;
+            }
+
+            submitButton.disabled = true;
+            document.getElementById('orderQueryResult').textContent = '查詢中...';
+            
+            try {
+                const url = `${GAS_URL}?type=order_query&query=${encodeURIComponent(`${name} ${phone}`)}&t=${new Date().getTime()}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                document.getElementById('orderQueryResult').textContent = data.response;
+            } catch (error) {
+                console.error('訂單查詢錯誤:', error);
+                document.getElementById('orderQueryResult').textContent = '查詢時發生錯誤，請稍後再試。';
+            } finally {
+                submitButton.disabled = false;
             }
         }
 
@@ -166,38 +342,19 @@
             sendButton.disabled = true;
 
             appendMessage('user', userInput);
-            appendMessage('bot', '查詢中...', 'loading');
+            appendMessage('bot', '處理中...', 'loading');
 
             try {
-                const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb4IpAm9DaEaqIWu0MaU0LDBXU9Ja5UuLi-RCUicRT1FkbpcPysly1FKKiiH5KMNbGjQ/exec';
-                const timestamp = new Date().getTime();
-                const url = `${GAS_URL}?query=${encodeURIComponent(userInput)}&t=${timestamp}`;
-                
+                const url = `${GAS_URL}?type=recipe_question&query=${encodeURIComponent(userInput)}&t=${new Date().getTime()}`;
                 const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const responseText = await response.text();
-                console.log('原始回應:', responseText);
-
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                } catch (jsonError) {
-                    console.error('JSON 解析錯誤:', jsonError);
-                    throw new Error('伺服器回應格式錯誤');
-                }
-
+                const data = await response.json();
+                
                 removeLastMessage();
-
                 if (data && data.response) {
                     appendMessage('bot', data.response);
                 } else {
-                    appendMessage('bot', '抱歉，沒有找到相關資訊');
+                    appendMessage('bot', '抱歉，沒有找到相關資訊。');
                 }
-
             } catch (error) {
                 console.error('請求錯誤:', error);
                 removeLastMessage();
@@ -229,25 +386,55 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('orderQueryBtn').addEventListener('click', showOrderQueryScreen);
+            document.getElementById('recipeQuestionBtn').addEventListener('click', showRecipeQuestionScreen);
+            document.getElementById('return-button').addEventListener('click', showWelcomeScreen);
+            document.getElementById('submitOrderButton').addEventListener('click', submitOrderQuery);
+            document.getElementById('sendButton').addEventListener('click', sendMessage);
             document.getElementById('userInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && !document.getElementById('sendButton').disabled) {
+                if (e.key === 'Enter' && !e.target.disabled) {
                     sendMessage();
                 }
             });
             initializeLiff();
-            
-            // 添加初始歡迎訊息
-            appendMessage('bot', '您好！我是阿慶師AI客服助手。請輸入訂單編號或手機號碼，我會協助您查詢訂單狀態。');
         });
     </script>
 </head>
 <body>
-    <div class="header">料理訂購客服助手</div>
-    <div class="chat-container">
-        <div id="messageBox" class="message-box"></div>
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="請輸入訂單編號或手機號碼">
-            <button id="sendButton" onclick="sendMessage()">送出</button>
+    <div class="header">
+        <div class="header-title" id="header-title"></div>
+        <button id="return-button" class="header-button" style="display:none;">返回主選單</button>
+    </div>
+    
+    <div class="container">
+        <div id="welcome-screen" class="welcome-container">
+            <h2>廚師AI客服助手</h2>
+            <p>請選擇您需要的服務，我們將竭誠為您服務。</p>
+            <button id="orderQueryBtn" class="action-button">查詢訂單狀態</button>
+            <button id="recipeQuestionBtn" class="action-button">詢問料理問題</button>
+        </div>
+
+        <div id="order-query-screen" style="display: none;">
+            <div id="order-form">
+                <div class="form-input-group">
+                    <label for="orderName">訂購人姓名</label>
+                    <input type="text" id="orderName" placeholder="請輸入訂購人姓名">
+                </div>
+                <div class="form-input-group">
+                    <label for="orderPhone">手機號碼</label>
+                    <input type="tel" id="orderPhone" placeholder="請輸入手機號碼">
+                </div>
+                <button id="submitOrderButton" class="submit-button">查詢訂單</button>
+            </div>
+            <div id="orderQueryResult" style="margin-top: 20px; padding: 15px; background-color: #fff; border-radius: 12px; white-space: pre-wrap;"></div>
+        </div>
+
+        <div id="recipe-question-screen" class="chat-interface">
+            <div id="messageBox" class="message-box"></div>
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="請輸入您的料理問題">
+                <button id="sendButton" class="send-button">送出</button>
+            </div>
         </div>
     </div>
 </body>
