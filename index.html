@@ -36,14 +36,16 @@
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex;
-            justify-content: space-between;
+            /* 修改：改為置中對齊 */
+            justify-content: center; 
             align-items: center;
-            padding-left: 15px;
-            padding-right: 15px;
+            height: 40px; /* 給予固定高度以容納 Logo */
         }
         
-        .header-title {
-            flex-grow: 1;
+        /* 新增：Logo 樣式 */
+        .header-logo {
+            height: 32px; /* 控制 Logo 高度 */
+            width: auto;
         }
         
         .header-button {
@@ -55,6 +57,9 @@
             font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s;
+            /* 新增：絕對定位返回按鈕，使其不影響 Logo 置中 */
+            position: absolute;
+            right: 15px;
         }
         
         .header-button:hover {
@@ -63,9 +68,12 @@
 
         .container {
             max-width: 100%;
+            /* 修改：header 高度變為 60px (40px + 20px padding) */
             margin-top: 60px;
             padding: 15px;
             box-sizing: border-box;
+            /* 新增：為了讓 footer 和關閉按鈕保持在底部 */
+            padding-bottom: 80px;
         }
 
         .welcome-container {
@@ -94,7 +102,8 @@
             color: white;
             border: none;
             border-radius: 25px;
-            font-size: 18px;
+            /* 修改：按鈕文字放大 4px */
+            font-size: 22px; 
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -249,6 +258,28 @@
             font-style: italic;
             background-color: #f1f1f1;
         }
+        
+        /* 新增：關閉按鈕樣式 */
+        .close-button {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            background: none;
+            border: none;
+            color: #888;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+        }
+        
+        /* 新增：頁腳樣式 */
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            font-size: 12px;
+            color: #aaa;
+        }
 
         @media (max-width: 480px) {
             .input-container {
@@ -270,6 +301,17 @@
                 await liff.init({ liffId: LIFF_ID });
                 if (!liff.isLoggedIn()) {
                     console.log('用戶未登入');
+                    // 如果未登入，也可以選擇跳轉到登入頁面 liff.login();
+                } else {
+                    // 修改：獲取用戶 Profile 並更新問候語
+                    try {
+                        const profile = await liff.getProfile();
+                        document.getElementById('welcome-message').textContent = `${profile.displayName} 您好，請問需要什麼服務？`;
+                    } catch (profileError) {
+                        console.error('獲取 Profile 失敗:', profileError);
+                        // 如果獲取失敗，顯示預設問候語
+                        document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？';
+                    }
                 }
                 showWelcomeScreen();
             } catch (error) {
@@ -282,8 +324,9 @@
             document.getElementById('welcome-screen').style.display = 'block';
             document.getElementById('order-query-screen').style.display = 'none';
             document.getElementById('recipe-question-screen').style.display = 'none';
-            document.getElementById('header-title').textContent = '阿慶師AI客服助手';
+            // 修改：返回主選單時，隱藏返回按鈕
             document.getElementById('return-button').style.display = 'none';
+            // 修改：主選單時，header-title 是 Logo，不需要變更文字
             currentMode = 'welcome';
         }
 
@@ -291,7 +334,7 @@
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('order-query-screen').style.display = 'block';
             document.getElementById('recipe-question-screen').style.display = 'none';
-            document.getElementById('header-title').textContent = '訂單查詢';
+            // 修改：顯示返回按鈕
             document.getElementById('return-button').style.display = 'block';
             document.getElementById('orderQueryResult').textContent = '';
             currentMode = 'order_query';
@@ -301,7 +344,7 @@
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('order-query-screen').style.display = 'none';
             document.getElementById('recipe-question-screen').style.display = 'block';
-            document.getElementById('header-title').textContent = '料理問題諮詢';
+            // 修改：顯示返回按鈕
             document.getElementById('return-button').style.display = 'block';
             document.getElementById('messageBox').innerHTML = ''; // 清空聊天紀錄
             appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？');
@@ -391,6 +434,16 @@
             document.getElementById('return-button').addEventListener('click', showWelcomeScreen);
             document.getElementById('submitOrderButton').addEventListener('click', submitOrderQuery);
             document.getElementById('sendButton').addEventListener('click', sendMessage);
+            
+            // 新增：為關閉按鈕加上事件監聽
+            document.getElementById('closeLiffButton').addEventListener('click', () => {
+                if (liff && typeof liff.closeWindow === 'function') {
+                    liff.closeWindow();
+                } else {
+                    alert('此功能僅在 LINE App 中有效');
+                }
+            });
+            
             document.getElementById('userInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && !e.target.disabled) {
                     sendMessage();
@@ -402,14 +455,13 @@
 </head>
 <body>
     <div class="header">
-        <div class="header-title" id="header-title"></div>
-        <button id="return-button" class="header-button" style="display:none;">返回主選單</button>
+        <img src="mooncake-book.svg" alt="阿慶師 Logo" class="header-logo">
+        <button id="return-button" class="header-button" style="display:none;">返回</button>
     </div>
     
     <div class="container">
         <div id="welcome-screen" class="welcome-container">
-            <h2>阿慶師AI客服助手</h2>
-            <p>請選擇您需要的服務</p>
+            <p id="welcome-message">請選擇您需要的服務</p>
             <button id="orderQueryBtn" class="action-button">查詢訂單狀態</button>
             <button id="recipeQuestionBtn" class="action-button">銷售商品介紹</button>
         </div>
@@ -436,6 +488,12 @@
                 <button id="sendButton" class="send-button">送出</button>
             </div>
         </div>
+        
+        <button id="closeLiffButton" class="close-button">關閉查詢，回到聊天室</button>
     </div>
+
+    <footer class="footer">
+        © 2025 阿慶師 版權所有
+    </footer>
 </body>
 </html>
