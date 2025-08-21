@@ -78,59 +78,57 @@
         }
         
         .welcome-container p {
-            font-size: 16px;
+            /* 修改：加大文字 */
+            font-size: 18px; 
             color: #666;
-            margin-bottom: 40px; /* 增加與按鈕的距離 */
+            margin-bottom: 40px;
         }
         
-        /* 新增：按鈕容器，用於左右並排 */
         .button-container {
             display: flex;
-            justify-content: center; /* 水平置中兩個按鈕 */
-            gap: 20px; /* 按鈕之間的間距 */
+            justify-content: center;
+            gap: 20px;
         }
 
-        /* 修改：action-button 的全新樣式 */
         .action-button {
-            background-color: #FFFFFF; /* 改為白色背景 */
-            color: var(--main-dark);  /* 文字顏色改為深紅色 */
-            border: 1px solid #E0E0E0; /* 加上淺色邊框 */
+            background-color: #FFFFFF;
+            color: var(--main-dark);
+            border: 1px solid #E0E0E0;
             
-            /* 尺寸與形狀 */
-            width: 140px;
-            height: 140px;
-            border-radius: 20px; /* 圓角方形 */
+            /* 修改：按鈕再加大 */
+            width: 150px;
+            height: 150px;
+            border-radius: 22px;
             
-            /* 內部佈局：上圖示下文字 */
             display: flex;
-            flex-direction: column; /* 垂直排列 */
-            justify-content: center; /* 垂直置中 */
-            align-items: center;   /* 水平置中 */
-            gap: 12px; /* 圖示與文字的間距 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* 修改：圖示與文字間距加大 */
+            gap: 15px; 
 
-            /* 其他 */
             padding: 15px;
             box-sizing: border-box;
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s ease; /* 過渡效果 */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* 加上陰影提升立體感 */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         .action-button:hover {
-            transform: translateY(-5px); /* 滑鼠懸浮時輕微上移 */
+            transform: translateY(-5px);
             box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
         
-        /* 修改：按鈕內部圖示的樣式 */
         .action-button i {
-            font-size: 40px; /* 放大圖示 */
-            color: var(--main-color); /* 圖示使用主題紅色 */
+            /* 修改：Icon 再加大 */
+            font-size: 44px; 
+            color: var(--main-color);
         }
 
-        /* 修改：按鈕內部文字的樣式 */
         .action-button span {
-            font-size: 16px;
+            /* 修改：按鈕文字再加大 */
+            font-size: 17px; 
             font-weight: bold;
         }
 
@@ -138,10 +136,6 @@
             padding-top: 30px;
         }
 
-        .form-input-group {
-            margin-bottom: 20px;
-        }
-        
         /* ... 以下為其他頁面的 CSS，保持不變 ... */
 
         .form-input-group label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: var(--text-color); }
@@ -167,11 +161,39 @@
         @media (max-width: 480px) { .input-container { padding: 10px; padding-bottom: calc(25px + env(safe-area-inset-bottom)); } }
     </style>
     <script>
-        // JavaScript 部分完全不用修改，保持原樣即可
         const LIFF_ID = "2007811541-6LyX2yor";
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbyi4ertsJ_OB3pVkg6SnW8t2s9yZpdyRjEEEEbiRSRDYgDx8Xdgwp9puEIzMgICbc6XTQ/exec';
         let currentMode = 'welcome';
-        async function initializeLiff() { try { await liff.init({ liffId: LIFF_ID }); if (!liff.isLoggedIn()) { console.log('用戶未登入'); } else { try { const profile = await liff.getProfile(); document.getElementById('welcome-message').textContent = `${profile.displayName} 您好，請問需要什麼服務？`; } catch (profileError) { console.error('獲取 Profile 失敗:', profileError); document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？'; } } showWelcomeScreen(); } catch (error) { console.error('LIFF 初始化失敗:', error); alert('LIFF 初始化失敗，部分功能可能無法使用'); } }
+
+        async function initializeLiff() {
+            try {
+                await liff.init({ liffId: LIFF_ID });
+                if (liff.isLoggedIn()) {
+                    const profile = await liff.getProfile();
+                    document.getElementById('welcome-message').textContent = `${profile.displayName} 您好，請問需要什麼服務？`;
+                } else {
+                    // 如果用戶沒登入，可能是在外部瀏覽器開啟，顯示通用問候語
+                    document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？';
+                }
+                showWelcomeScreen();
+            } catch (error) {
+                console.error('LIFF 初始化失敗:', error);
+                // 修改：當初始化失敗時，顯示更詳細、更有幫助的錯誤訊息給PM
+                document.body.innerHTML = `
+                    <div style="padding: 20px; text-align: center; font-family: sans-serif;">
+                        <h2 style="color: #D32F2F;">LIFF 載入失敗</h2>
+                        <p style="color: #333; line-height: 1.6;">
+                            請確認以下設定：<br><br>
+                            1. 您目前開啟此網頁的網址，是否已正確填入 LINE Developers Console 的 LIFF 設定中的 <strong>Endpoint URL</strong> 欄位？<br><br>
+                            2. LIFF ID "<strong>${LIFF_ID}</strong>" 是否正確？<br><br>
+                            <strong style="color: #D32F2F;">這是最常見的錯誤原因，請務必核對！</strong>
+                        </p>
+                    </div>
+                `;
+            }
+        }
+        
+        // ... 以下 JavaScript 函數保持不變 ...
         function showWelcomeScreen() { document.getElementById('welcome-screen').style.display = 'block'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'none'; currentMode = 'welcome'; }
         function showOrderQueryScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'block'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'block'; document.getElementById('orderQueryResult').textContent = ''; currentMode = 'order_query'; }
         function showRecipeQuestionScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'block'; document.getElementById('return-button').style.display = 'block'; document.getElementById('messageBox').innerHTML = ''; appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？'); currentMode = 'recipe_question'; }
@@ -204,7 +226,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div id="order-query-screen" style="display: none;">
             <div id="order-form">
                 <div class="form-input-group"><label for="orderName">訂購人姓名</label><input type="text" id="orderName" placeholder="請輸入訂購人姓名"></div>
