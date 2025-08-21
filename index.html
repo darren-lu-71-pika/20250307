@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>阿慶師AI客服助手</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         :root {
             --main-color: #D32F2F;
@@ -37,13 +36,15 @@
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex;
+            /* 修改：改為置中對齊 */
             justify-content: center; 
             align-items: center;
-            height: 40px;
+            height: 40px; /* 給予固定高度以容納 Logo */
         }
         
+        /* 新增：Logo 樣式 */
         .header-logo {
-            height: 32px;
+            height: 32px; /* 控制 Logo 高度 */
             width: auto;
         }
         
@@ -56,6 +57,7 @@
             font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s;
+            /* 新增：絕對定位返回按鈕，使其不影響 Logo 置中 */
             position: absolute;
             right: 15px;
         }
@@ -66,9 +68,11 @@
 
         .container {
             max-width: 100%;
+            /* 修改：header 高度變為 60px (40px + 20px padding) */
             margin-top: 60px;
             padding: 15px;
             box-sizing: border-box;
+            /* 新增：為了讓 footer 和關閉按鈕保持在底部 */
             padding-bottom: 80px;
         }
 
@@ -77,131 +81,376 @@
             padding-top: 50px;
         }
         
-        .welcome-container p {
-            /* 修改：加大文字 */
-            font-size: 18px; 
-            color: #666;
-            margin-bottom: 40px;
+        .welcome-container h2 {
+            font-size: 24px;
+            color: var(--main-dark);
         }
         
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .welcome-container p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
         }
-
+        
         .action-button {
-            background-color: #FFFFFF;
-            color: var(--main-dark);
-            border: 1px solid #E0E0E0;
-            
-            /* 修改：按鈕再加大 */
-            width: 150px;
-            height: 150px;
-            border-radius: 22px;
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            /* 修改：圖示與文字間距加大 */
-            gap: 15px; 
-
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin: 20px auto;
             padding: 15px;
-            box-sizing: border-box;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            /* 修改：按鈕文字放大 4px */
+            font-size: 22px; 
+            font-weight: bold;
             cursor: pointer;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: background-color 0.3s;
         }
         
         .action-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            background-color: var(--main-dark);
         }
         
-        .action-button i {
-            /* 修改：Icon 再加大 */
-            font-size: 44px; 
-            color: var(--main-color);
-        }
-
-        .action-button span {
-            /* 修改：按鈕文字再加大 */
-            font-size: 17px; 
-            font-weight: bold;
-        }
-
         #order-form {
             padding-top: 30px;
         }
 
-        /* ... 以下為其他頁面的 CSS，保持不變 ... */
+        .form-input-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-input-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        .form-input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input-group input:focus {
+            border-color: var(--main-color);
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: var(--main-dark);
+        }
+        
+        .submit-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-        .form-input-group label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: var(--text-color); }
-        .form-input-group input { width: 100%; padding: 12px 15px; border: 2px solid #E0E0E0; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
-        .form-input-group input:focus { border-color: var(--main-color); }
-        .submit-button { width: 100%; padding: 15px; background-color: var(--main-color); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
-        .submit-button:hover { background-color: var(--main-dark); }
-        .submit-button:disabled { background-color: #ccc; cursor: not-allowed; }
-        .chat-interface { display: none; }
-        .message-box { height: calc(100vh - 190px); overflow-y: auto; background-color: #f5f5f5; padding: 15px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-        .input-container { position: fixed; bottom: 0; left: 0; right: 0; display: flex; gap: 10px; padding: 15px; background-color: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .input-container input { flex: 1; padding: 12px 15px; height: 50px; border: 2px solid #E0E0E0; border-radius: 25px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
-        .input-container input:focus { border-color: var(--main-color); }
-        .send-button { min-width: 90px; height: 50px; background-color: var(--main-color); color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
-        .send-button:hover { background-color: var(--main-dark); }
-        .send-button:disabled { background-color: #ccc; cursor: not-allowed; }
-        .message { margin: 8px 0; padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.4; }
-        .user-message { background-color: var(--main-color); color: white; margin-left: auto; border-bottom-right-radius: 5px; }
-        .bot-message { background-color: #F1F1F1; color: var(--text-color); margin-right: auto; border-bottom-left-radius: 5px; }
-        .loading { color: #666; font-style: italic; background-color: #f1f1f1; }
-        .close-button { display: block; width: fit-content; margin: 30px auto 0; background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 14px; padding: 5px; }
-        .footer { text-align: center; padding: 20px 0 10px 0; font-size: 12px; color: #aaa; }
-        @media (max-width: 480px) { .input-container { padding: 10px; padding-bottom: calc(25px + env(safe-area-inset-bottom)); } }
+        .chat-interface {
+            display: none;
+        }
+
+        .message-box {
+            height: calc(100vh - 190px);
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .input-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            height: 50px;
+            border: 2px solid #E0E0E0;
+            border-radius: 25px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-container input:focus {
+            border-color: var(--main-color);
+        }
+
+        .send-button {
+            min-width: 90px;
+            height: 50px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background-color: var(--main-dark);
+        }
+
+        .send-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin: 8px 0;
+            padding: 12px 16px;
+            border-radius: 20px;
+            max-width: 85%;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background-color: var(--main-color);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background-color: #F1F1F1;
+            color: var(--text-color);
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+            background-color: #f1f1f1;
+        }
+        
+        /* 新增：關閉按鈕樣式 */
+        .close-button {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            background: none;
+            border: none;
+            color: #888;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+        }
+        
+        /* 新增：頁腳樣式 */
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px 0;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        @media (max-width: 480px) {
+            .input-container {
+                padding: 10px;
+                padding-bottom: calc(25px + env(safe-area-inset-bottom));
+            }
+        }
     </style>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
         const LIFF_ID = "2007811541-6LyX2yor";
+        // 請將以下 GAS URL 替換成你修改後的 GAS 部署 URL
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbyi4ertsJ_OB3pVkg6SnW8t2s9yZpdyRjEEEEbiRSRDYgDx8Xdgwp9puEIzMgICbc6XTQ/exec';
-        let currentMode = 'welcome';
+        
+        let currentMode = 'welcome'; // welcome, order_query, recipe_question
 
         async function initializeLiff() {
             try {
                 await liff.init({ liffId: LIFF_ID });
-                if (liff.isLoggedIn()) {
-                    const profile = await liff.getProfile();
-                    document.getElementById('welcome-message').textContent = `${profile.displayName} 您好，請問需要什麼服務？`;
+                if (!liff.isLoggedIn()) {
+                    console.log('用戶未登入');
+                    // 如果未登入，也可以選擇跳轉到登入頁面 liff.login();
                 } else {
-                    // 如果用戶沒登入，可能是在外部瀏覽器開啟，顯示通用問候語
-                    document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？';
+                    // 修改：獲取用戶 Profile 並更新問候語
+                    try {
+                        const profile = await liff.getProfile();
+                        document.getElementById('welcome-message').textContent = `${profile.displayName} 您好，請問需要什麼服務？`;
+                    } catch (profileError) {
+                        console.error('獲取 Profile 失敗:', profileError);
+                        // 如果獲取失敗，顯示預設問候語
+                        document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？';
+                    }
                 }
                 showWelcomeScreen();
             } catch (error) {
                 console.error('LIFF 初始化失敗:', error);
-                // 修改：當初始化失敗時，顯示更詳細、更有幫助的錯誤訊息給PM
-                document.body.innerHTML = `
-                    <div style="padding: 20px; text-align: center; font-family: sans-serif;">
-                        <h2 style="color: #D32F2F;">LIFF 載入失敗</h2>
-                        <p style="color: #333; line-height: 1.6;">
-                            請確認以下設定：<br><br>
-                            1. 您目前開啟此網頁的網址，是否已正確填入 LINE Developers Console 的 LIFF 設定中的 <strong>Endpoint URL</strong> 欄位？<br><br>
-                            2. LIFF ID "<strong>${LIFF_ID}</strong>" 是否正確？<br><br>
-                            <strong style="color: #D32F2F;">這是最常見的錯誤原因，請務必核對！</strong>
-                        </p>
-                    </div>
-                `;
+                alert('LIFF 初始化失敗，部分功能可能無法使用');
             }
         }
-        
-        // ... 以下 JavaScript 函數保持不變 ...
-        function showWelcomeScreen() { document.getElementById('welcome-screen').style.display = 'block'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'none'; currentMode = 'welcome'; }
-        function showOrderQueryScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'block'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'block'; document.getElementById('orderQueryResult').textContent = ''; currentMode = 'order_query'; }
-        function showRecipeQuestionScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'block'; document.getElementById('return-button').style.display = 'block'; document.getElementById('messageBox').innerHTML = ''; appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？'); currentMode = 'recipe_question'; }
-        async function submitOrderQuery() { const name = document.getElementById('orderName').value.trim(); const phone = document.getElementById('orderPhone').value.trim(); const submitButton = document.getElementById('submitOrderButton'); if (!name || !phone) { alert('請同時輸入姓名與手機號碼'); return; } submitButton.disabled = true; document.getElementById('orderQueryResult').textContent = '查詢中...'; try { const url = `${GAS_URL}?type=order_query&query=${encodeURIComponent(`${name} ${phone}`)}&t=${new Date().getTime()}`; const response = await fetch(url); const data = await response.json(); document.getElementById('orderQueryResult').textContent = data.response; } catch (error) { console.error('訂單查詢錯誤:', error); document.getElementById('orderQueryResult').textContent = '查詢時發生錯誤，請稍後再試。'; } finally { submitButton.disabled = false; } }
-        async function sendMessage() { const userInput = document.getElementById('userInput').value.trim(); if (!userInput) return; const sendButton = document.getElementById('sendButton'); sendButton.disabled = true; appendMessage('user', userInput); appendMessage('bot', '處理中...', 'loading'); try { const url = `${GAS_URL}?type=recipe_question&query=${encodeURIComponent(userInput)}&t=${new Date().getTime()}`; const response = await fetch(url); const data = await response.json(); removeLastMessage(); if (data && data.response) { appendMessage('bot', data.response); } else { appendMessage('bot', '抱歉，沒有找到相關資訊。'); } } catch (error) { console.error('請求錯誤:', error); removeLastMessage(); appendMessage('bot', '抱歉，查詢時發生錯誤：' + error.message); } finally { sendButton.disabled = false; document.getElementById('userInput').value = ''; } }
-        function appendMessage(sender, text, extraClass = '') { const messageBox = document.getElementById('messageBox'); const messageDiv = document.createElement('div'); messageDiv.className = `message ${sender}-message ${extraClass}`; messageDiv.textContent = text; messageBox.appendChild(messageDiv); messageBox.scrollTop = messageBox.scrollHeight; }
-        function removeLastMessage() { const messageBox = document.getElementById('messageBox'); const messages = messageBox.querySelectorAll('.message'); if (messages.length > 0) { const lastMessage = messages[messages.length - 1]; if (lastMessage.classList.contains('loading')) { lastMessage.remove(); } } }
-        document.addEventListener('DOMContentLoaded', function() { document.getElementById('orderQueryBtn').addEventListener('click', showOrderQueryScreen); document.getElementById('recipeQuestionBtn').addEventListener('click', showRecipeQuestionScreen); document.getElementById('return-button').addEventListener('click', showWelcomeScreen); document.getElementById('submitOrderButton').addEventListener('click', submitOrderQuery); document.getElementById('sendButton').addEventListener('click', sendMessage); document.getElementById('closeLiffButton').addEventListener('click', () => { if (liff && typeof liff.closeWindow === 'function') { liff.closeWindow(); } else { alert('此功能僅在 LINE App 中有效'); } }); document.getElementById('userInput').addEventListener('keypress', function(e) { if (e.key === 'Enter' && !e.target.disabled) { sendMessage(); } }); initializeLiff(); });
+
+        function showWelcomeScreen() {
+            document.getElementById('welcome-screen').style.display = 'block';
+            document.getElementById('order-query-screen').style.display = 'none';
+            document.getElementById('recipe-question-screen').style.display = 'none';
+            // 修改：返回主選單時，隱藏返回按鈕
+            document.getElementById('return-button').style.display = 'none';
+            // 修改：主選單時，header-title 是 Logo，不需要變更文字
+            currentMode = 'welcome';
+        }
+
+        function showOrderQueryScreen() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('order-query-screen').style.display = 'block';
+            document.getElementById('recipe-question-screen').style.display = 'none';
+            // 修改：顯示返回按鈕
+            document.getElementById('return-button').style.display = 'block';
+            document.getElementById('orderQueryResult').textContent = '';
+            currentMode = 'order_query';
+        }
+
+        function showRecipeQuestionScreen() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('order-query-screen').style.display = 'none';
+            document.getElementById('recipe-question-screen').style.display = 'block';
+            // 修改：顯示返回按鈕
+            document.getElementById('return-button').style.display = 'block';
+            document.getElementById('messageBox').innerHTML = ''; // 清空聊天紀錄
+            appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？');
+            currentMode = 'recipe_question';
+        }
+
+        async function submitOrderQuery() {
+            const name = document.getElementById('orderName').value.trim();
+            const phone = document.getElementById('orderPhone').value.trim();
+            const submitButton = document.getElementById('submitOrderButton');
+
+            if (!name || !phone) {
+                alert('請同時輸入姓名與手機號碼');
+                return;
+            }
+
+            submitButton.disabled = true;
+            document.getElementById('orderQueryResult').textContent = '查詢中...';
+            
+            try {
+                const url = `${GAS_URL}?type=order_query&query=${encodeURIComponent(`${name} ${phone}`)}&t=${new Date().getTime()}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                document.getElementById('orderQueryResult').textContent = data.response;
+            } catch (error) {
+                console.error('訂單查詢錯誤:', error);
+                document.getElementById('orderQueryResult').textContent = '查詢時發生錯誤，請稍後再試。';
+            } finally {
+                submitButton.disabled = false;
+            }
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput').value.trim();
+            if (!userInput) return;
+
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = true;
+
+            appendMessage('user', userInput);
+            appendMessage('bot', '處理中...', 'loading');
+
+            try {
+                const url = `${GAS_URL}?type=recipe_question&query=${encodeURIComponent(userInput)}&t=${new Date().getTime()}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                removeLastMessage();
+                if (data && data.response) {
+                    appendMessage('bot', data.response);
+                } else {
+                    appendMessage('bot', '抱歉，沒有找到相關資訊。');
+                }
+            } catch (error) {
+                console.error('請求錯誤:', error);
+                removeLastMessage();
+                appendMessage('bot', '抱歉，查詢時發生錯誤：' + error.message);
+            } finally {
+                sendButton.disabled = false;
+                document.getElementById('userInput').value = '';
+            }
+        }
+
+        function appendMessage(sender, text, extraClass = '') {
+            const messageBox = document.getElementById('messageBox');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message ${extraClass}`;
+            messageDiv.textContent = text;
+            messageBox.appendChild(messageDiv);
+            messageBox.scrollTop = messageBox.scrollHeight;
+        }
+
+        function removeLastMessage() {
+            const messageBox = document.getElementById('messageBox');
+            const messages = messageBox.querySelectorAll('.message');
+            if (messages.length > 0) {
+                const lastMessage = messages[messages.length - 1];
+                if (lastMessage.classList.contains('loading')) {
+                    lastMessage.remove();
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('orderQueryBtn').addEventListener('click', showOrderQueryScreen);
+            document.getElementById('recipeQuestionBtn').addEventListener('click', showRecipeQuestionScreen);
+            document.getElementById('return-button').addEventListener('click', showWelcomeScreen);
+            document.getElementById('submitOrderButton').addEventListener('click', submitOrderQuery);
+            document.getElementById('sendButton').addEventListener('click', sendMessage);
+            
+            // 新增：為關閉按鈕加上事件監聽
+            document.getElementById('closeLiffButton').addEventListener('click', () => {
+                if (liff && typeof liff.closeWindow === 'function') {
+                    liff.closeWindow();
+                } else {
+                    alert('此功能僅在 LINE App 中有效');
+                }
+            });
+            
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.target.disabled) {
+                    sendMessage();
+                }
+            });
+            initializeLiff();
+        });
     </script>
 </head>
 <body>
@@ -211,33 +460,33 @@
     </div>
     
     <div class="container">
-        <div id="welcome-screen">
-            <div class="welcome-container">
-                <p id="welcome-message">請選擇您需要的服務</p>
-                <div class="button-container">
-                    <button id="orderQueryBtn" class="action-button">
-                        <i class="fa-solid fa-truck"></i>
-                        <span>查詢訂單狀態</span>
-                    </button>
-                    <button id="recipeQuestionBtn" class="action-button">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>銷售商品介紹</span>
-                    </button>
-                </div>
-            </div>
+        <div id="welcome-screen" class="welcome-container">
+            <p id="welcome-message">請選擇您需要的服務</p>
+            <button id="orderQueryBtn" class="action-button">查詢訂單狀態</button>
+            <button id="recipeQuestionBtn" class="action-button">銷售商品介紹</button>
         </div>
-        
+
         <div id="order-query-screen" style="display: none;">
             <div id="order-form">
-                <div class="form-input-group"><label for="orderName">訂購人姓名</label><input type="text" id="orderName" placeholder="請輸入訂購人姓名"></div>
-                <div class="form-input-group"><label for="orderPhone">手機號碼</label><input type="tel" id="orderPhone" placeholder="請輸入手機號碼"></div>
+                <div class="form-input-group">
+                    <label for="orderName">訂購人姓名</label>
+                    <input type="text" id="orderName" placeholder="請輸入訂購人姓名">
+                </div>
+                <div class="form-input-group">
+                    <label for="orderPhone">手機號碼</label>
+                    <input type="tel" id="orderPhone" placeholder="請輸入手機號碼">
+                </div>
                 <button id="submitOrderButton" class="submit-button">查詢訂單</button>
             </div>
             <div id="orderQueryResult" style="margin-top: 20px; padding: 15px; background-color: #fff; border-radius: 12px; white-space: pre-wrap;"></div>
         </div>
+
         <div id="recipe-question-screen" class="chat-interface">
             <div id="messageBox" class="message-box"></div>
-            <div class="input-container"><input type="text" id="userInput" placeholder="請輸入您的料理問題"><button id="sendButton" class="send-button">送出</button></div>
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="請輸入您的料理問題">
+                <button id="sendButton" class="send-button">送出</button>
+            </div>
         </div>
         
         <button id="closeLiffButton" class="close-button">關閉查詢，回到聊天室</button>
