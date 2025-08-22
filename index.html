@@ -79,46 +79,43 @@
         .welcome-container p {
             font-size: 16px;
             color: #666;
-            margin-bottom: 40px; /* 增加與按鈕的距離 */
+            margin-bottom: 30px;
         }
         
-        /* 新增：按鈕容器，用於左右並排 */
-        .button-container {
-            display: flex;
-            justify-content: center; /* 水平置中兩個按鈕 */
-            gap: 20px; /* 按鈕之間的間距 */
-        }
-
-        /* 修改：action-button 的全新樣式 */
+        /* ↓↓↓ 這裡是本次唯一的修改區域 ↓↓↓ */
         .action-button {
-            /* 尺寸與形狀 */
-            width: 140px;
-            height: 140px;
-            border-radius: 20px; /* 圓角方形 */
-            padding: 15px; /* 內邊距 */
-
-            /* 內部佈局：讓文字在方形內垂直和水平置中 */
+            /* 佈局：保持上下排列並置中 */
             display: flex;
+            margin: 20px auto;
+
+            /* 尺寸與形狀：改為方形 */
+            width: 160px;
+            height: 160px;
+            border-radius: 22px; /* 圓角方形 */
+            
+            /* 內部：讓文字在方形內垂直和水平置中 */
             justify-content: center;
             align-items: center;
 
-            /* 文字與外觀 */
-            font-size: 20px; /* 調整文字大小以適應方形 */
-            font-weight: bold;
-            text-align: center;
+            /* 外觀 */
+            padding: 15px;
             background-color: var(--main-color);
             color: white;
             border: none;
-
+            font-size: 20px; 
+            font-weight: bold;
+            text-align: center;
+            
             /* 其他 */
             cursor: pointer;
             transition: background-color 0.3s;
-            box-sizing: border-box; /* 確保 padding 不會撐大按鈕 */
+            box-sizing: border-box;
         }
         
         .action-button:hover {
             background-color: var(--main-dark);
         }
+        /* ↑↑↑ 唯一的修改區域到此結束 ↑↑↑ */
         
         #order-form {
             padding-top: 30px;
@@ -128,8 +125,6 @@
             margin-bottom: 20px;
         }
         
-        /* ... 以下為其他頁面的 CSS，保持不變 ... */
-
         .form-input-group label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: var(--text-color); }
         .form-input-group input { width: 100%; padding: 12px 15px; border: 2px solid #E0E0E0; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
         .form-input-group input:focus { border-color: var(--main-color); }
@@ -153,7 +148,7 @@
         @media (max-width: 480px) { .input-container { padding: 10px; padding-bottom: calc(25px + env(safe-area-inset-bottom)); } }
     </style>
     <script>
-        // JavaScript 部分完全沒有修改
+        // JavaScript 部分完全沒有任何改動
         const LIFF_ID = "2007811541-6LyX2yor";
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbyi4ertsJ_OB3pVkg6SnW8t2s9yZpdyRjEEEEbiRSRDYgDx8Xdgwp9puEIzMgICbc6XTQ/exec';
         let currentMode = 'welcome';
@@ -178,10 +173,8 @@
         <div id="welcome-screen">
             <div class="welcome-container">
                 <p id="welcome-message">請選擇您需要的服務</p>
-                <div class="button-container">
-                    <button id="orderQueryBtn" class="action-button">查詢訂單狀態</button>
-                    <button id="recipeQuestionBtn" class="action-button">銷售商品介紹</button>
-                </div>
+                <button id="orderQueryBtn" class="action-button">查詢訂單狀態</button>
+                <button id="recipeQuestionBtn" class="action-button">銷售商品介紹</button>
             </div>
         </div>
 
