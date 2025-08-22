@@ -10,9 +10,12 @@
             --main-color: #D32F2F;
             --main-dark: #9A0007;
             --main-light: #FF6659;
-            --bg-color: #FFF8F8;
+            --main-color-rgb: 211, 47, 47; /* For RGBA shadows */
+            --bg-color: #FAFAFA; /* Slightly off-white for a softer look */
             --chat-bg: #FFFFFF;
             --text-color: #333333;
+            --light-border: #E0E0E0;
+            --subtle-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
         body {
@@ -21,15 +24,16 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+            line-height: 1.6; /* Improved readability */
         }
 
         .header {
             background-color: var(--main-color);
             color: white;
-            padding: 10px;
+            padding: 10px 15px;
             text-align: center;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 600; /* Slightly bolder */
             position: fixed;
             top: 0;
             left: 0;
@@ -37,125 +41,298 @@
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex;
-            justify-content: center; 
+            justify-content: center;
             align-items: center;
-            height: 40px;
+            height: 45px;
         }
-        
+
         .header-logo {
-            height: 32px;
+            height: 34px;
             width: auto;
         }
-        
+
         .header-button {
             background-color: transparent;
             color: white;
-            border: 1px solid white;
-            padding: 5px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 14px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s ease-in-out;
             position: absolute;
             right: 15px;
         }
-        
+
         .header-button:hover {
-            background-color: var(--main-dark);
+            background-color: rgba(0,0,0,0.1);
         }
 
         .container {
             max-width: 100%;
-            margin-top: 60px;
-            padding: 15px;
+            margin-top: 65px;
+            padding: 20px;
             box-sizing: border-box;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
 
         .welcome-container {
             text-align: center;
-            padding-top: 50px;
+            padding-top: 40px;
         }
-        
+
         .welcome-container p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 30px;
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px; /* Adjusted spacing */
         }
-        
-        /* ↓↓↓ 這裡是本次唯一的修改區域 ↓↓↓ */
+
+        /* The container for the main action buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens if needed */
+            gap: 20px;
+        }
+
         .action-button {
             display: flex;
-            margin: 20px auto;
-            width: 160px;
-            height: 160px;
-            border-radius: 22px;
-            
-            /* 修改：改為垂直排列 */
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            /* 新增：圖示與文字的間距 */
-            gap: 15px; 
-
+            gap: 12px;
             padding: 15px;
-            background-color: var(--main-color);
-            color: white;
-            border: none;
+            background-color: #FFFFFF; /* Changed to white for a card-like feel */
+            color: var(--main-dark); /* Dark red text */
+            border: 1px solid var(--light-border);
             cursor: pointer;
-            transition: background-color 0.3s;
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             box-sizing: border-box;
+            box-shadow: var(--subtle-shadow);
         }
-        
+
         .action-button:hover {
-            background-color: var(--main-dark);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
         }
 
-        /* 新增：按鈕內部圖示的樣式 */
         .action-button i {
-            font-size: 48px; /* 稍微加大圖示 */
+            font-size: 42px;
+            color: var(--main-color); /* Icon keeps the main red color */
         }
 
-        /* 新增：按鈕內部文字的樣式 */
         .action-button span {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 600;
         }
-        /* ↑↑↑ 唯一的修改區域到此結束 ↑↑↑ */
-        
+
         #order-form {
-            padding-top: 30px;
+            padding-top: 35px;
         }
 
         .form-input-group {
             margin-bottom: 20px;
         }
+
+        .form-input-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            text-align: left;
+        }
+
+        .form-input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-border);
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .form-input-group input:focus {
+            border-color: var(--main-color);
+            box-shadow: 0 0 0 3px rgba(var(--main-color-rgb), 0.15);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+        }
         
-        .form-input-group label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: var(--text-color); }
-        .form-input-group input { width: 100%; padding: 12px 15px; border: 2px solid #E0E0E0; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
-        .form-input-group input:focus { border-color: var(--main-color); }
-        .submit-button { width: 100%; padding: 15px; background-color: var(--main-color); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
-        .submit-button:hover { background-color: var(--main-dark); }
-        .submit-button:disabled { background-color: #ccc; cursor: not-allowed; }
-        .chat-interface { display: none; }
-        .message-box { height: calc(100vh - 190px); overflow-y: auto; background-color: #f5f5f5; padding: 15px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-        .input-container { position: fixed; bottom: 0; left: 0; right: 0; display: flex; gap: 10px; padding: 15px; background-color: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .input-container input { flex: 1; padding: 12px 15px; height: 50px; border: 2px solid #E0E0E0; border-radius: 25px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
-        .input-container input:focus { border-color: var(--main-color); }
-        .send-button { min-width: 90px; height: 50px; background-color: var(--main-color); color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
-        .send-button:hover { background-color: var(--main-dark); }
-        .send-button:disabled { background-color: #ccc; cursor: not-allowed; }
-        .message { margin: 8px 0; padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.4; }
-        .user-message { background-color: var(--main-color); color: white; margin-left: auto; border-bottom-right-radius: 5px; }
-        .bot-message { background-color: #F1F1F1; color: var(--text-color); margin-right: auto; border-bottom-left-radius: 5px; }
-        .loading { color: #666; font-style: italic; background-color: #f1f1f1; }
-        .close-button { display: block; width: fit-content; margin: 30px auto 0; background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 14px; padding: 5px; }
-        .footer { text-align: center; padding: 20px 0 10px 0; font-size: 12px; color: #aaa; }
-        @media (max-width: 480px) { .input-container { padding: 10px; padding-bottom: calc(25px + env(safe-area-inset-bottom)); } }
+        .submit-button:hover {
+            background-color: var(--main-dark);
+        }
+        
+        .submit-button:active {
+            transform: scale(0.98); /* Add a press effect */
+        }
+
+        .submit-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .chat-interface {
+            display: none;
+        }
+
+        .message-box {
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            background-color: #FFFFFF;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--light-border);
+            border-radius: 12px;
+        }
+
+        .input-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            padding: 10px 15px;
+            background-color: #f7f7f7; /* Slightly grey background */
+            border-top: 1px solid var(--light-border);
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 10px 15px;
+            height: 42px;
+            border: 1px solid var(--light-border);
+            border-radius: 21px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            background-color: #fff;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .input-container input:focus {
+            border-color: var(--main-color);
+            box-shadow: 0 0 0 3px rgba(var(--main-color-rgb), 0.15);
+        }
+
+        .send-button {
+            width: 80px;
+            height: 42px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 21px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .send-button:hover {
+            background-color: var(--main-dark);
+        }
+
+        .send-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 85%;
+            font-size: 16px;
+            line-height: 1.5;
+            display: table; /* Allow shrinking to content size */
+        }
+
+        .user-message {
+            background-color: var(--main-color);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background-color: #E9E9EB;
+            color: var(--text-color);
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .loading {
+            color: #777;
+            font-style: italic;
+        }
+
+        .close-button {
+            display: block;
+            width: fit-content;
+            margin: 40px auto 0;
+            background: none;
+            border: none;
+            color: #888;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .close-button:hover {
+            color: #333;
+            border-color: #aaa;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0 15px 0;
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        @media (max-width: 360px) {
+            .button-container {
+                gap: 15px;
+            }
+            .action-button {
+                width: 130px;
+                height: 130px;
+                gap: 8px;
+            }
+            .action-button i {
+                font-size: 34px;
+            }
+            .action-button span {
+                font-size: 14px;
+            }
+        }
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        // JavaScript 部分與上一版完全相同
+        // JavaScript is the same as the last working version
         const LIFF_ID = "2007811541-6LyX2yor";
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbyi4ertsJ_OB3pVkg6SnW8t2s9yZpdyRjEEEEbiRSRDYgDx8Xdgwp9puEIzMgICbc6XTQ/exec';
         let currentMode = 'welcome';
@@ -179,15 +356,17 @@
     <div class="container">
         <div id="welcome-screen">
             <div class="welcome-container">
-                <p id="welcome-message">請選擇您需要的服務</p>
-                <button id="orderQueryBtn" class="action-button">
-                    <i class="fa-solid fa-truck"></i>
-                    <span>查詢訂單狀態</span>
-                </button>
-                <button id="recipeQuestionBtn" class="action-button">
-                    <i class="fa-solid fa-comment"></i>
-                    <span>銷售商品介紹</span>
-                </button>
+                <p id="welcome-message">您好，請問需要什麼服務？</p>
+                <div class="button-container">
+                    <button id="orderQueryBtn" class="action-button">
+                        <i class="fa-solid fa-truck"></i>
+                        <span>查詢訂單狀態</span>
+                    </button>
+                    <button id="recipeQuestionBtn" class="action-button">
+                        <i class="fa-solid fa-comment"></i>
+                        <span>銷售商品介紹</span>
+                    </button>
+                </div>
             </div>
         </div>
         
