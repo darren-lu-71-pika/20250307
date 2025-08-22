@@ -87,10 +87,9 @@
             margin-bottom: 25px;
         }
 
-        /* ↓↓↓ 這裡是本次的修改核心 ↓↓↓ */
         .action-button {
             display: flex;
-            margin: 20px auto; 
+            margin: 20px auto;
             width: 160px;
             height: 160px;
             border-radius: 20px;
@@ -99,52 +98,44 @@
             align-items: center;
             gap: 12px;
             padding: 15px;
-            
-            /* 描邊風格的核心樣式 */
-            background-color: #FFFFFF; /* 改為白色背景 */
-            border: 2px solid var(--main-color); /* 紅色邊框 */
-            color: var(--main-color); /* 紅色文字 */
-            
+            background-color: #FFFFFF;
+            border: 2px solid var(--main-color);
+            color: var(--main-color);
             cursor: pointer;
             text-align: center;
             box-sizing: border-box;
             box-shadow: var(--subtle-shadow);
-            /* 平滑過渡效果 */
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
-        
-        /* 滑鼠懸浮或手指觸碰時的樣式 */
+
         .action-button:hover, .action-button:active {
             transform: translateY(-4px);
             box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-            
-            /* 顏色反轉 */
             background-color: var(--main-color);
             color: white;
         }
 
         .action-button i {
-            font-size: 42px;
-            color: var(--main-color); /* 圖示平時是紅色 */
-            transition: color 0.2s ease-in-out; /* 讓圖示顏色變化也平滑 */
+            /* 42px * 1.2 = 50.4, rounded to 50px */
+            font-size: 50px; 
+            color: var(--main-color);
+            transition: color 0.2s ease-in-out;
         }
 
-        /* 當按鈕 hover 或 active 時，圖示顏色變為白色 */
         .action-button:hover i, .action-button:active i {
             color: white;
         }
 
         .action-button span {
-            font-size: 16px;
+            /* 16px * 1.2 = 19.2, rounded to 19px */
+            font-size: 19px; 
             font-weight: 600;
         }
-        /* ↑↑↑ 修改核心結束 ↑↑↑ */
 
         #order-form {
             padding-top: 35px;
         }
 
-        /* ... 以下為其他頁面的 CSS，保持不變 ... */
         .form-input-group { margin-bottom: 20px; }
         .form-input-group label { display: block; font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text-color); text-align: left; }
         .form-input-group input { width: 100%; padding: 12px 15px; border: 1px solid var(--light-border); border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
@@ -168,7 +159,7 @@
         .close-button { display: block; width: fit-content; margin: 40px auto 0; background: none; border: none; color: #888; text-decoration: none; cursor: pointer; font-size: 14px; padding: 5px; border-bottom: 1px solid #ccc; transition: color 0.2s, border-color 0.2s; }
         .close-button:hover { color: #333; border-color: #aaa; }
         .footer { text-align: center; padding: 20px 0 15px 0; font-size: 12px; color: #ccc; }
-        @media (max-width: 360px) { .action-button { width: 140px; height: 140px; gap: 8px; } .action-button i { font-size: 36px; } .action-button span { font-size: 14px; } }
+        @media (max-width: 360px) { .action-button { width: 140px; height: 140px; gap: 8px; } .action-button i { font-size: 42px; } .action-button span { font-size: 15px; } }
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
@@ -182,7 +173,7 @@
         function showRecipeQuestionScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'block'; document.getElementById('return-button').style.display = 'block'; document.getElementById('messageBox').innerHTML = ''; appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？'); currentMode = 'recipe_question'; }
         async function submitOrderQuery() { const name = document.getElementById('orderName').value.trim(); const phone = document.getElementById('orderPhone').value.trim(); const submitButton = document.getElementById('submitOrderButton'); if (!name || !phone) { alert('請同時輸入姓名與手機號碼'); return; } submitButton.disabled = true; document.getElementById('orderQueryResult').textContent = '查詢中...'; try { const url = `${GAS_URL}?type=order_query&query=${encodeURIComponent(`${name} ${phone}`)}&t=${new Date().getTime()}`; const response = await fetch(url); const data = await response.json(); document.getElementById('orderQueryResult').textContent = data.response; } catch (error) { console.error('訂單查詢錯誤:', error); document.getElementById('orderQueryResult').textContent = '查詢時發生錯誤，請稍後再試。'; } finally { submitButton.disabled = false; } }
         async function sendMessage() { const userInput = document.getElementById('userInput').value.trim(); if (!userInput) return; const sendButton = document.getElementById('sendButton'); sendButton.disabled = true; appendMessage('user', userInput); appendMessage('bot', '處理中...', 'loading'); try { const url = `${GAS_URL}?type=recipe_question&query=${encodeURIComponent(userInput)}&t=${new Date().getTime()}`; const response = await fetch(url); const data = await response.json(); removeLastMessage(); if (data && data.response) { appendMessage('bot', data.response); } else { appendMessage('bot', '抱歉，沒有找到相關資訊。'); } } catch (error) { console.error('請求錯誤:', error); removeLastMessage(); appendMessage('bot', '抱歉，查詢時發生錯誤：' + error.message); } finally { sendButton.disabled = false; document.getElementById('userInput').value = ''; } }
-        function appendMessage(sender, text, extraClass = '') { const messageBox = document.getElementById('messageBox'); const messageDiv = document.createElement('div'); messageDiv.className = `message ${sender-message} ${extraClass}`; messageDiv.textContent = text; messageBox.appendChild(messageDiv); messageBox.scrollTop = messageBox.scrollHeight; }
+        function appendMessage(sender, text, extraClass = '') { const messageBox = document.getElementById('messageBox'); const messageDiv = document.createElement('div'); messageDiv.className = `message ${sender}-message ${extraClass}`; messageDiv.textContent = text; messageBox.appendChild(messageDiv); messageBox.scrollTop = messageBox.scrollHeight; }
         function removeLastMessage() { const messageBox = document.getElementById('messageBox'); const messages = messageBox.querySelectorAll('.message'); if (messages.length > 0) { const lastMessage = messages[messages.length - 1]; if (lastMessage.classList.contains('loading')) { lastMessage.remove(); } } }
         document.addEventListener('DOMContentLoaded', function() { document.getElementById('orderQueryBtn').addEventListener('click', showOrderQueryScreen); document.getElementById('recipeQuestionBtn').addEventListener('click', showRecipeQuestionScreen); document.getElementById('return-button').addEventListener('click', showWelcomeScreen); document.getElementById('submitOrderButton').addEventListener('click', submitOrderQuery); document.getElementById('sendButton').addEventListener('click', sendMessage); document.getElementById('closeLiffButton').addEventListener('click', () => { if (liff && typeof liff.closeWindow === 'function') { liff.closeWindow(); } else { alert('此功能僅在 LINE App 中有效'); } }); document.getElementById('userInput').addEventListener('keypress', function(e) { if (e.key === 'Enter' && !e.target.disabled) { sendMessage(); } }); initializeLiff(); });
     </script>
