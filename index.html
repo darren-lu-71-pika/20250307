@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>阿慶師AI客服助手</title>
     <style>
+        /* CSS 部分與上一版完全相同 */
         :root {
             --main-color: #D32F2F;
             --main-dark: #9A0007;
@@ -13,118 +14,18 @@
             --chat-bg: #FFFFFF;
             --text-color: #333333;
         }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        .header {
-            background-color: var(--main-color);
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center; 
-            align-items: center;
-            height: 40px;
-        }
-        
-        .header-logo {
-            height: 32px;
-            width: auto;
-        }
-        
-        .header-button {
-            background-color: transparent;
-            color: white;
-            border: 1px solid white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            position: absolute;
-            right: 15px;
-        }
-        
-        .header-button:hover {
-            background-color: var(--main-dark);
-        }
-
-        .container {
-            max-width: 100%;
-            margin-top: 60px;
-            padding: 15px;
-            box-sizing: border-box;
-            padding-bottom: 80px;
-        }
-
-        .welcome-container {
-            text-align: center;
-            padding-top: 50px;
-        }
-        
-        .welcome-container p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        
-        /* ↓↓↓ 這裡是唯一的修改區域 ↓↓↓ */
-        .action-button {
-            /* 佈局：保持上下排列並置中 */
-            display: flex;
-            margin: 20px auto;
-
-            /* 尺寸與形狀：改為方形 */
-            width: 160px;
-            height: 160px;
-            border-radius: 22px;
-            
-            /* 內部：讓文字在方形內垂直和水平置中 */
-            justify-content: center;
-            align-items: center;
-
-            /* 外觀 */
-            padding: 15px;
-            background-color: var(--main-color);
-            color: white;
-            border: none;
-            font-size: 20px; 
-            font-weight: bold;
-            text-align: center;
-            
-            /* 其他 */
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-sizing: border-box;
-        }
-        
-        .action-button:hover {
-            background-color: var(--main-dark);
-        }
-        /* ↑↑↑ 唯一的修改區域到此結束 ↑↑↑ */
-        
-        #order-form {
-            padding-top: 30px;
-        }
-
-        .form-input-group {
-            margin-bottom: 20px;
-        }
-        
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); }
+        .header { background-color: var(--main-color); color: white; padding: 10px; text-align: center; font-size: 18px; font-weight: bold; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: center; align-items: center; height: 40px; }
+        .header-logo { height: 32px; width: auto; }
+        .header-button { background-color: transparent; color: white; border: 1px solid white; padding: 5px 10px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: background-color 0.3s; position: absolute; right: 15px; }
+        .header-button:hover { background-color: var(--main-dark); }
+        .container { max-width: 100%; margin-top: 60px; padding: 15px; box-sizing: border-box; padding-bottom: 80px; }
+        .welcome-container { text-align: center; padding-top: 50px; }
+        .welcome-container p { font-size: 16px; color: #666; margin-bottom: 30px; }
+        .action-button { display: flex; margin: 20px auto; width: 160px; height: 160px; border-radius: 22px; justify-content: center; align-items: center; padding: 15px; background-color: var(--main-color); color: white; border: none; font-size: 20px; font-weight: bold; text-align: center; cursor: pointer; transition: background-color 0.3s; box-sizing: border-box; }
+        .action-button:hover { background-color: var(--main-dark); }
+        #order-form { padding-top: 30px; }
+        .form-input-group { margin-bottom: 20px; }
         .form-input-group label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: var(--text-color); }
         .form-input-group input { width: 100%; padding: 12px 15px; border: 2px solid #E0E0E0; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
         .form-input-group input:focus { border-color: var(--main-color); }
@@ -147,12 +48,31 @@
         .footer { text-align: center; padding: 20px 0 10px 0; font-size: 12px; color: #aaa; }
         @media (max-width: 480px) { .input-container { padding: 10px; padding-bottom: calc(25px + env(safe-area-inset-bottom)); } }
     </style>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        // JavaScript 來自您提供的最原始穩定版本，完全沒動
         const LIFF_ID = "2007811541-6LyX2yor";
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbyi4ertsJ_OB3pVkg6SnW8t2s9yZpdyRjEEEEbiRSRDYgDx8Xdgwp9puEIzMgICbc6XTQ/exec';
         let currentMode = 'welcome';
-        async function initializeLiff() { try { await liff.init({ liffId: LIFF_ID }); if (!liff.isLoggedIn()) { console.log('用戶未登入'); } else { try { const profile = await liff.getProfile(); document.getElementById('welcome-message').textContent = `${profile.displayName} 您好，請問需要什麼服務？`; } catch (profileError) { console.error('獲取 Profile 失敗:', profileError); document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？'; } } showWelcomeScreen(); } catch (error) { console.error('LIFF 初始化失敗:', error); alert('LIFF 初始化失敗，部分功能可能無法使用'); } }
+
+        // ↓↓↓ 這裡是唯一的修改區域 ↓↓↓
+        async function initializeLiff() {
+            try {
+                // 只進行初始化，不做任何後續操作
+                await liff.init({ liffId: LIFF_ID });
+                
+                // 初始化成功後，直接顯示主畫面
+                showWelcomeScreen();
+                
+                // 預設的歡迎語會直接顯示，不再更新
+                document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？';
+
+            } catch (error) {
+                console.error('LIFF 初始化失敗:', error);
+                alert('LIFF 初始化失敗，部分功能可能無法使用');
+            }
+        }
+        // ↑↑↑ 唯一的修改區域到此結束 ↑↑↑
+
         function showWelcomeScreen() { document.getElementById('welcome-screen').style.display = 'block'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'none'; currentMode = 'welcome'; }
         function showOrderQueryScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'block'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'block'; document.getElementById('orderQueryResult').textContent = ''; currentMode = 'order_query'; }
         function showRecipeQuestionScreen() { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'block'; document.getElementById('return-button').style.display = 'block'; document.getElementById('messageBox').innerHTML = ''; appendMessage('bot', '您好！我是料理助手，有什麼關於食材或食譜的問題嗎？'); currentMode = 'recipe_question'; }
@@ -177,7 +97,7 @@
                 <button id="recipeQuestionBtn" class="action-button">銷售商品介紹</button>
             </div>
         </div>
-
+        
         <div id="order-query-screen" style="display: none;">
             <div id="order-form">
                 <div class="form-input-group"><label for="orderName">訂購人姓名</label><input type="text" id="orderName" placeholder="請輸入訂購人姓名"></div>
