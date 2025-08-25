@@ -115,7 +115,7 @@
     <script>
         // JavaScript is the same as the last working version
         const LIFF_ID = "2007811541-6LyX2yor";
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyi4ertsJ_OB3pVkg6SnW8t2s9yZpdyRjEEEEbiRSRDYgDx8Xdgwp9puEIzMgICbc6XTQ/exec';
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbzqDXcCuEmhp9fOTG-4HTog3ycCJztlDEQKbOOEta3_WQrzzJRCCPIfyePXWloxKvelWw/exec';
         let currentMode = 'welcome';
         async function initializeLiff() { try { await liff.init({ liffId: LIFF_ID }); showWelcomeScreen(); document.getElementById('welcome-message').textContent = '您好，請問需要什麼服務？'; } catch (error) { console.error('LIFF 初始化失敗:', error); alert('LIFF 初始化失敗，部分功能可能無法使用'); } }
         function showWelcomeScreen() { document.getElementById('welcome-screen').style.display = 'block'; document.getElementById('order-query-screen').style.display = 'none'; document.getElementById('recipe-question-screen').style.display = 'none'; document.getElementById('return-button').style.display = 'none'; currentMode = 'welcome'; }
