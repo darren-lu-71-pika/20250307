@@ -32,34 +32,42 @@
         .header-logo { height: 34px; width: auto; }
         .header-button { background-color: transparent; color: white; border: 1px solid rgba(255, 255, 255, 0.8); padding: 5px 12px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: background-color 0.2s ease-in-out; position: absolute; right: 15px; }
         .header-button:hover { background-color: rgba(0,0,0,0.1); }
+        
+        /* 【修正項目 1】容器與底部間距優化 */
         .container { 
             max-width: 100%; 
-            margin-top: 65px; 
             padding: 20px; 
             box-sizing: border-box; 
+            padding-top: 65px; 
+            /* 預留底部空間給 close button 和 footer */
             padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
         }
-        /* ↓↓↓ 修正項目 1: 讓單一按鈕在垂直方向看起來更置中 ↓↓↓ */
-        .welcome-container { 
-            text-align: center; 
-            padding-top: 0; /* 移除上方的額外間距 */
-            /* 引入 Flexbox 進行垂直置中 */
+
+        /* 【修正項目 2】歡迎畫面垂直置中 */
+        #welcome-screen {
+            /* 計算高度 = 視窗高度 - Header高度 - 容器Padding - 底部預留空間 */
+            min-height: calc(100vh - 45px - 40px - 120px - env(safe-area-inset-bottom));
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            /* 設定一個高度，讓它填滿頂部和底部元素之間的空間 */
-            min-height: calc(100vh - 270px - env(safe-area-inset-bottom));
+            align-items: center; 
+            justify-content: center; /* 垂直置中 */
+            text-align: center;
         }
-        /* ↑↑↑ 修正結束 ↑↑↑ */
+
+        .welcome-container { 
+            text-align: center; 
+            padding-top: 0; /* 移除原有的上邊距 */
+        }
+        
         .welcome-container p { font-size: 18px; color: #555; margin-bottom: 25px; }
-        /* ↓↓↓ 修正項目 2: 讓單一按鈕更寬更顯眼，並移除自動邊距 ↓↓↓ */
+        
+        /* 【修正項目 3】單一按鈕優化 */
         .action-button { 
             display: flex; 
-            margin: 0 0 20px 0; /* 移除 auto margin */
-            width: 80%; /* 讓按鈕寬度擴大到 80% */
-            max-width: 280px; /* 設定最大寬度，避免過寬 */
-            height: 120px; /* 略微縮小高度 */
+            margin: 0; /* 讓 Flexbox 置中 */
+            width: 80%; 
+            max-width: 250px; /* 限制最大寬度 */
+            height: 120px; 
             border-radius: 20px; 
             flex-direction: column; 
             justify-content: center; 
@@ -79,8 +87,7 @@
         .action-button i { font-size: 40px; color: var(--main-color); transition: color 0.2s ease-in-out; }
         .action-button:hover i, .action-button:active i { color: white; }
         .action-button span { font-size: 19px; font-weight: 600; }
-        /* ↑↑↑ 修正結束 ↑↑↑ */
-
+        
         #order-form { padding-top: 35px; }
         .form-input-group { margin-bottom: 20px; }
         .form-input-group label { display: block; font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text-color); text-align: left; }
@@ -106,7 +113,6 @@
             text-align: left;
         }
 
-        /* 訂單錯誤訊息排版修正，保持不變 */
         #orderQueryResult.error p,
         #orderQueryResult.error ul {
             margin: 0; 
@@ -145,6 +151,8 @@
         .user-message { background-color: var(--main-color); color: white; margin-left: auto; border-bottom-right-radius: 5px; }
         .bot-message { background-color: #E9E9EB; color: var(--text-color); margin-right: auto; border-bottom-left-radius: 5px; }
         .loading { color: #777; font-style: italic; }
+        
+        /* 【修正項目 4】關閉按鈕與頁尾間距優化 */
         .close-button { 
             display: block; 
             width: fit-content; 
@@ -167,6 +175,7 @@
             color: #ccc; 
             padding-bottom: calc(15px + env(safe-area-inset-bottom));
         }
+        
         @media (max-width: 360px) { 
             .action-button { width: 140px; height: 110px; gap: 8px; } 
             .action-button i { font-size: 38px; } 
@@ -175,7 +184,7 @@
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        // JavaScript is the same as the last working version
+        // JavaScript 保持不變
         const LIFF_ID = "2007811541-6LyX2yor";
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbzqDXcCuEmhp9fOTG-4HTog3ycCJztlDEQKbOOEta3_WQrzzJRCCPIfyePXWloxKvelWw/exec';
         let currentMode = 'welcome';
@@ -237,7 +246,7 @@
                     <i class="fa-solid fa-truck"></i>
                     <span>查詢訂單狀態</span>
                 </button>
-               <button id="recipeQuestionBtn" class="action-button" style="display: none;">
+                              <button id="recipeQuestionBtn" class="action-button" style="display: none;">
                     <i class="fa-solid fa-comment"></i>
                     <span>銷售商品介紹</span>
                 </button>
