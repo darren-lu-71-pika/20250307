@@ -1,49 +1,330 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>手遊限定兌換中心 - 2026 戰報</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-      body {
-        font-family: 'Noto Sans TC', sans-serif;
-        background-color: #030712;
-        margin: 0;
-        overflow-x: hidden;
-      }
-      @keyframes blob {
-        0% { transform: translate(0px, 0px) scale(1); }
-        33% { transform: translate(30px, -50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0px, 0px) scale(1); }
-      }
-      .animate-blob {
-        animation: blob 7s infinite;
-      }
-      .animation-delay-2000 {
-        animation-delay: 2s;
-      }
-      .animation-delay-4000 {
-        animation-delay: 4s;
-      }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #020617;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Animated background blobs */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 10s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* Glassmorphism Styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .glass:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Toast Animation */
+        @keyframes toast-slide-in {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .toast-active {
+            animation: toast-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Shine effect on buttons */
+        .shine-button {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+            opacity: 0;
+        }
+        .shine-button:hover::after {
+            opacity: 1;
+            left: 100%;
+            top: 100%;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+<body class="min-h-screen selection:bg-blue-500/30">
+
+    <!-- Dynamic Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 -left-10 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
+        <div class="absolute top-0 -right-10 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-20 left-1/3 w-96 h-96 bg-fuchsia-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
+        
+        <!-- Subtle Pattern -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-black"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 w-full glass border-b border-white/5 px-6">
+        <div class="max-w-7xl mx-auto h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <i data-lucide="zap" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    G-CENTER <span class="text-blue-500">2026</span>
+                </span>
+            </div>
+            <div class="flex items-center gap-6">
+                <span class="hidden md:block text-xs text-slate-500 font-medium tracking-widest uppercase">Mobile Game Rewards Hub</span>
+                <button class="p-2.5 rounded-full hover:bg-white/5 transition-colors border border-white/5">
+                    <i data-lucide="share-2" class="w-4 h-4 text-slate-400"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="relative py-24 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold mb-10">
+                <i data-lucide="award" class="w-4 h-4"></i>
+                <span>年度最受歡迎兌換工具</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight leading-[1.1]">
+                手遊限定兌換中心 <br />
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-fuchsia-500 to-blue-400">2026 戰報</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+                自動彙整最新《原神領域》、《賽博戰線》等熱門手遊禮包代碼。<br class="hidden md:block" />
+                極速領取，戰力加倍。
+            </p>
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <main id="game-list" class="max-w-4xl mx-auto px-6 pb-32 space-y-12">
+        <!-- JS Dynamic Content -->
+    </main>
+
+    <!-- Safety Section -->
+    <section class="max-w-4xl mx-auto px-6 mb-32">
+        <div class="p-10 rounded-[2.5rem] glass border-amber-500/10 flex flex-col md:flex-row items-center gap-8">
+            <div class="w-20 h-20 shrink-0 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                <i data-lucide="shield-check" class="w-10 h-10"></i>
+            </div>
+            <div>
+                <h4 class="text-2xl font-bold text-white mb-3 tracking-tight">安全與公平承諾</h4>
+                <p class="text-slate-400 leading-relaxed text-lg">
+                    所有代碼皆為官方發布。我們絕不要求輸入您的遊戲密碼。請注意，部分限時禮包可能因領取人數過多而提前失效，請務必第一時間複製兌換。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/5 text-center">
+        <div class="flex justify-center gap-8 mb-8 opacity-40">
+            <i data-lucide="twitch" class="w-6 h-6"></i>
+            <i data-lucide="twitter" class="w-6 h-6"></i>
+            <i data-lucide="discord" class="w-6 h-6"></i>
+        </div>
+        <p class="text-slate-500 text-sm font-medium tracking-widest uppercase mb-2">
+            © 2026 G-CENTER MOBILE REPORT
+        </p>
+        <p class="text-slate-600 text-xs">
+            由遊戲愛好者專為玩家社群打造
+        </p>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-4 pointer-events-none"></div>
+
+    <script>
+        // Data Store
+        const GAMES = [
+            {
+                id: 'genshin',
+                name: '《原神領域》',
+                tag: 'RPG / 冒險',
+                description: '在提瓦特的廣袤大地展開旅程，揭開神靈的秘密。',
+                accentColor: 'blue',
+                icon: 'gamepad-2',
+                codes: [
+                    { code: 'GENSHIN2026', title: '2026 年度慶典禮包', items: '原石 x100, 摩拉 x50,000' },
+                    { code: 'NEWYEARGIFT', title: '新春限定體力補給', items: '脆弱樹脂 x2, 冒險家經驗 x20' }
+                ]
+            },
+            {
+                id: 'cyber',
+                name: '《賽博戰線》',
+                tag: 'FPS / 賽博龐克',
+                description: '在被霓虹淹沒的未來都市，為了生存與正義而戰。',
+                accentColor: 'fuchsia',
+                icon: 'cpu',
+                codes: [
+                    { code: 'CYBER777', title: '傳奇裝備箱', items: '紫色核心 x1, 能量飲料 x5' },
+                    { code: 'READYPLAYER1', title: '初始黑客包', items: '基礎組件 x100, 信用點 x10k' }
+                ]
+            }
+        ];
+
+        // Rendering Engine
+        function renderGames() {
+            const container = document.getElementById('game-list');
+            
+            container.innerHTML = GAMES.map(game => {
+                const accentHex = game.accentColor === 'blue' ? '#3b82f6' : '#d946ef';
+                const accentClass = game.accentColor === 'blue' ? 'text-blue-400' : 'text-fuchsia-400';
+                const bgClass = game.accentColor === 'blue' ? 'bg-blue-500/10' : 'bg-fuchsia-500/10';
+                const borderHoverClass = game.accentColor === 'blue' ? 'hover:border-blue-500/30' : 'hover:border-fuchsia-500/30';
+                const glowClass = game.accentColor === 'blue' ? 'hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'hover:shadow-[0_0_30px_rgba(217,70,239,0.15)]';
+
+                return `
+                    <div class="glass rounded-[3rem] p-8 md:p-12 relative overflow-hidden group ${borderHoverClass} ${glowClass}">
+                        <!-- Top Header -->
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                            <div class="flex items-center gap-6">
+                                <div class="w-16 h-16 rounded-[1.5rem] ${bgClass} border border-white/5 flex items-center justify-center ${accentClass} shadow-inner">
+                                    <i data-lucide="${game.icon}" class="w-8 h-8"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-3 mb-1">
+                                        <h3 class="text-3xl font-black text-white">${game.name}</h3>
+                                        <span class="text-[10px] px-2 py-0.5 rounded-full border border-white/10 text-slate-500 font-bold uppercase tracking-wider">${game.tag}</span>
+                                    </div>
+                                    <p class="text-slate-500 font-medium">${game.description}</p>
+                                </div>
+                            </div>
+                            <i data-lucide="star" class="w-6 h-6 text-slate-700 hidden md:block"></i>
+                        </div>
+
+                        <!-- Codes Grid -->
+                        <div class="grid grid-cols-1 gap-5">
+                            ${game.codes.map(item => `
+                                <div class="relative flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6 p-6 rounded-[2rem] bg-black/40 border border-white/5 group/code hover:bg-black/60 transition-all duration-300">
+                                    <div class="flex items-center gap-5">
+                                        <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-slate-400 group-hover/code:text-white transition-colors">
+                                            <i data-lucide="gift" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] mb-1">${item.title}</div>
+                                            <div class="text-xl font-mono font-bold text-white tracking-[0.1em]">${item.code}</div>
+                                            <div class="text-xs text-slate-600 mt-1 font-medium">${item.items}</div>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        onclick="copyCode('${item.code}')" 
+                                        class="shine-button px-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm flex items-center justify-center gap-3 transition-all active:scale-95 whitespace-nowrap"
+                                    >
+                                        <i data-lucide="copy" class="w-4 h-4"></i>
+                                        <span>複製代碼</span>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Accent Decoration -->
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 blur-3xl rounded-full opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Re-initialize icons
+            lucide.createIcons();
+        }
+
+        // Copy Feature
+        function copyCode(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`已複製兌換碼：<span class="font-mono font-bold text-blue-400">${text}</span>`);
+            }).catch(err => {
+                showToast('複製失敗，請手動複製', true);
+            });
+        }
+
+        // Toast Engine
+        function showToast(message, isError = false) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            toast.className = `toast-active flex items-center gap-4 px-8 py-5 glass border-white/10 rounded-[2rem] shadow-2xl pointer-events-auto min-w-[320px] mb-4`;
+            
+            const icon = isError ? 'alert-circle' : 'check-circle';
+            const iconColor = isError ? 'text-rose-500' : 'text-blue-500';
+            const shadowColor = isError ? 'shadow-rose-500/20' : 'shadow-blue-500/20';
+            
+            toast.classList.add(shadowColor);
+            
+            toast.innerHTML = `
+                <div class="w-10 h-10 rounded-full ${isError ? 'bg-rose-500/10' : 'bg-blue-500/10'} flex items-center justify-center ${iconColor}">
+                    <i data-lucide="${icon}" class="w-6 h-6"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-white text-sm font-medium leading-relaxed">${message}</p>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            // Auto-remove
+            setTimeout(() => {
+                toast.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, -20px) scale(0.9)';
+                setTimeout(() => toast.remove(), 600);
+            }, 3000);
+        }
+
+        // Boot
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGames();
+        });
+    </script>
 </body>
 </html>
