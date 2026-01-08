@@ -3,328 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>手遊限定兌換中心 - 2026 戰報</title>
-    <!-- Tailwind CSS CDN -->
+    <title>霓虹抽卡中心 - 戰略性資源終端</title>
+    <!-- 外部庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Noto Sans TC -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIuWpmuibiOaKveWNoOS4reW_gyIsCiAgInNob3J0X25hbWUiIjogIuWpmuibiOaKveWNoCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZjhmYWZjIiwKICAidGhlbWVfY29sb3IiOiAiIzBmMTcyNCIsCiAgImljb25zIjogW3sgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZnJlZXBpay5jb20vNTEyLzg4NTYvODg1NjA0MC5wbmciLCAidHlwZSI6ICJpbWFnZS9wbmciLCAic2l6ZXMiOiAiNTEyeDUxMiIgfV0KfQ==">
+
     <style>
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: #020617;
-            color: #f1f5f9;
-            margin: 0;
-            overflow-x: hidden;
+        :root {
+            --cyan: #22d3ee;
+            --magenta: #d946ef;
+            --lime: #bef264;
         }
-
-        /* Animated background blobs */
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-            animation: blob 10s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
-        }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-
-        /* Glassmorphism Styles */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .glass:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Toast Animation */
-        @keyframes toast-slide-in {
-            from { transform: translate(-50%, 100%); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-        .toast-active {
-            animation: toast-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        /* Shine effect on buttons */
-        .shine-button {
-            position: relative;
-            overflow: hidden;
-        }
-        .shine-button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            transition: 0.5s;
-            opacity: 0;
-        }
-        .shine-button:hover::after {
-            opacity: 1;
-            left: 100%;
-            top: 100%;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #020617;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
-    </style>
-</head>
-<body class="min-h-screen selection:bg-blue-500/30">
-
-    <!-- Dynamic Background -->
-    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div class="absolute top-0 -left-10 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
-        <div class="absolute top-0 -right-10 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-20 left-1/3 w-96 h-96 bg-fuchsia-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .cyber-shadow-cyan { box-shadow: 4px 4px 0px var(--cyan); }
+        .cyber-shadow-magenta { box-shadow: 6px 6px 0px var(--magenta); }
+        .cyber-shadow-lime { box-shadow: 4px 4px 0px var(--lime); }
+        .tab-active { border-bottom: 4px solid #0f172a; color: #0f172a; }
+        .input-focus:focus { border-color: var(--cyan); outline: none; }
         
-        <!-- Subtle Pattern -->
-        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#ffffff 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-black"></div>
-    </div>
+        /* 動畫 */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 w-full glass border-b border-white/5 px-6">
-        <div class="max-w-7xl mx-auto h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <i data-lucide="zap" class="text-white w-6 h-6"></i>
-                </div>
-                <span class="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                    G-CENTER <span class="text-blue-500">2026</span>
-                </span>
+        /* 自定義滾動條 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body class="text-slate-900">
+
+    <!-- 導航欄 -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-slate-900 flex items-center justify-center rotate-45">
+                <span class="text-white text-xs font-black -rotate-45">NG</span>
             </div>
-            <div class="flex items-center gap-6">
-                <span class="hidden md:block text-xs text-slate-500 font-medium tracking-widest uppercase">Mobile Game Rewards Hub</span>
-                <button class="p-2.5 rounded-full hover:bg-white/5 transition-colors border border-white/5">
-                    <i data-lucide="share-2" class="w-4 h-4 text-slate-400"></i>
-                </button>
+            <div>
+                <h1 class="text-sm font-black tracking-tighter uppercase leading-none">霓虹抽卡</h1>
+                <p class="text-[10px] text-cyan-500 font-bold uppercase tracking-widest">系統協議 v3.0</p>
             </div>
         </div>
-    </nav>
-
-    <!-- Header Section -->
-    <header class="relative py-24 px-6 text-center">
-        <div class="max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold mb-10">
-                <i data-lucide="award" class="w-4 h-4"></i>
-                <span>年度最受歡迎兌換工具</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight leading-[1.1]">
-                手遊限定兌換中心 <br />
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-fuchsia-500 to-blue-400">2026 戰報</span>
-            </h1>
-            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
-                自動彙整最新《原神領域》、《賽博戰線》等熱門手遊禮包代碼。<br class="hidden md:block" />
-                極速領取，戰力加倍。
-            </p>
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:block">
+            STATUS: <span class="text-lime-500">ENCRYPTED_ONLINE</span>
         </div>
     </header>
 
-    <!-- Content Area -->
-    <main id="game-list" class="max-w-4xl mx-auto px-6 pb-32 space-y-12">
-        <!-- JS Dynamic Content -->
+    <main class="max-w-7xl mx-auto p-6 lg:p-12">
+        <!-- 標題與分頁按鈕 -->
+        <div class="mb-8">
+            <h2 id="main-title" class="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2">戰略性抽卡計算</h2>
+            <div class="flex items-center gap-2 mb-8">
+                <div id="status-line" class="h-1 w-12 bg-cyan-400"></div>
+                <p id="main-subtitle" class="text-xs font-medium text-slate-400 uppercase tracking-widest">高精度蒙特卡洛概率模擬引擎</p>
+            </div>
+
+            <div class="flex gap-8 border-b border-slate-200">
+                <button onclick="switchTab('calc')" id="btn-tab-calc" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all tab-active">抽卡計算機</button>
+                <button onclick="switchTab('redeem')" id="btn-tab-redeem" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all text-slate-300">兌換碼中心</button>
+            </div>
+        </div>
+
+        <!-- 計算機面板 -->
+        <section id="pane-calc" class="animate-fade">
+            <div class="space-y-8">
+                <!-- 頂部全局設置 -->
+                <div class="bg-white p-6 border border-slate-200 cyber-shadow-cyan flex flex-wrap items-end gap-6">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">選擇遊戲</label>
+                        <select id="input-game" onchange="handleInputChange()" class="w-full bg-slate-50 border border-slate-200 p-3 outline-none focus:border-cyan-400 font-bold">
+                            <option value="ZZZ">絕區零 (ZZZ)</option>
+                            <option value="WUWA">鳴潮 (WuWa)</option>
+                            <option value="HSR">崩壞：星穹鐵道 (HSR)</option>
+                        </select>
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">投入總抽數</label>
+                        <input id="input-total-pulls" type="number" value="160" oninput="handleInputChange()" class="w-full bg-slate-50 border border-slate-200 p-3 mono text-xl font-black text-cyan-600 outline-none focus:border-cyan-400">
+                    </div>
+                    <div class="bg-slate-900 text-white p-4 flex flex-col justify-center min-w-[150px]">
+                        <span class="text-[10px] opacity-60 font-bold uppercase">達成總機率</span>
+                        <span id="res-success-rate" class="text-2xl font-black mono text-magenta-400">0.0%</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 角色目標卡片 -->
+                    <div id="card-char" class="bg-white p-6 border border-slate-200 transition-all">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-slate-900">
+                                <span class="w-2 h-2 bg-cyan-400"></span>
+                                角色池目標
+                            </h3>
+                            <input type="checkbox" id="check-char-enabled" checked onchange="handleInputChange()" class="w-4 h-4">
+                        </div>
+                        <div class="space-y-4" id="group-char">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 mb-1">目標個數 (含命座)</label>
+                                    <input id="input-char-target" type="number" value="1" oninput="handleInputChange()" class="w-full bg-slate-50 border border-slate-200 p-2 mono outline-none focus:border-cyan-400">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 mb-1">當前水位</label>
+                                    <input id="input-char-pity" type="number" value="0" oninput="handleInputChange()" class="w-full bg-slate-50 border border-slate-200 p-2 mono outline-none focus:border-cyan-400">
+                                </div>
+                            </div>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input id="check-char-guaranteed" type="checkbox" onchange="handleInputChange()" class="w-4 h-4 accent-magenta-500">
+                                <span class="text-xs font-bold text-slate-600">已處於大保底狀態</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 武器目標卡片 -->
+                    <div id="card-weapon" class="bg-white p-6 border border-slate-200 transition-all">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-slate-900">
+                                <span class="w-2 h-2 bg-magenta-400"></span>
+                                武器 / 專武目標
+                            </h3>
+                            <input type="checkbox" id="check-weapon-enabled" checked onchange="handleInputChange()" class="w-4 h-4">
+                        </div>
+                        <div class="space-y-4" id="group-weapon">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 mb-1">目標個數 (含精煉)</label>
+                                    <input id="input-weapon-target" type="number" value="1" oninput="handleInputChange()" class="w-full bg-slate-50 border border-slate-200 p-2 mono outline-none focus:border-magenta-400">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 mb-1">當前水位</label>
+                                    <input id="input-weapon-pity" type="number" value="0" oninput="handleInputChange()" class="w-full bg-slate-50 border border-slate-200 p-2 mono outline-none focus:border-magenta-400">
+                                </div>
+                            </div>
+                            <div id="weapon-guaranteed-box">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input id="check-weapon-guaranteed" type="checkbox" onchange="handleInputChange()" class="w-4 h-4 accent-cyan-500">
+                                    <span class="text-xs font-bold text-slate-600">已處於大保底狀態 (定軌/繼承)</span>
+                                </label>
+                            </div>
+                            <div id="wuwa-weapon-notice" class="hidden text-[10px] font-bold text-lime-600 bg-lime-50 p-2 border border-lime-100">
+                                鳴潮武器池機制：100% 必中，無 50/50。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 圖表展示 -->
+                <div class="bg-white p-6 border border-slate-200 cyber-shadow-lime">
+                    <h2 class="text-sm font-black tracking-widest uppercase mb-6 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-lime-400"></span>
+                        累計達成機率曲線 (模擬中...)
+                    </h2>
+                    <div class="h-[300px] w-full relative">
+                        <canvas id="probChart"></canvas>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">預期平均</p>
+                            <p id="res-avg" class="text-lg font-black mono text-slate-700">0 抽</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">中位數</p>
+                            <p id="res-median" class="text-lg font-black mono text-slate-700">0 抽</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">模擬精度</p>
+                            <p class="text-lg font-black mono text-cyan-500">2,000 次</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">目標組合</p>
+                            <p id="res-combo" class="text-sm font-bold text-slate-700">1角色 + 1武器</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 兌換碼面板 -->
+        <section id="pane-redeem" class="hidden animate-fade">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center gap-4 mb-8">
+                    <button onclick="filterRedeem('ZZZ')" id="btn-game-zzz" class="px-6 py-2 text-xs font-bold uppercase border-b-2 border-slate-900 text-slate-900">絕區零</button>
+                    <button onclick="filterRedeem('WUWA')" id="btn-game-wuwa" class="px-6 py-2 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400">鳴潮</button>
+                    <button onclick="filterRedeem('HSR')" id="btn-game-hsr" class="px-6 py-2 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400">星穹鐵道</button>
+                </div>
+                <div id="code-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- JS 動態生成內容 -->
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Safety Section -->
-    <section class="max-w-4xl mx-auto px-6 mb-32">
-        <div class="p-10 rounded-[2.5rem] glass border-amber-500/10 flex flex-col md:flex-row items-center gap-8">
-            <div class="w-20 h-20 shrink-0 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500">
-                <i data-lucide="shield-check" class="w-10 h-10"></i>
-            </div>
-            <div>
-                <h4 class="text-2xl font-bold text-white mb-3 tracking-tight">安全與公平承諾</h4>
-                <p class="text-slate-400 leading-relaxed text-lg">
-                    所有代碼皆為官方發布。我們絕不要求輸入您的遊戲密碼。請注意，部分限時禮包可能因領取人數過多而提前失效，請務必第一時間複製兌換。
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-20 border-t border-white/5 text-center">
-        <div class="flex justify-center gap-8 mb-8 opacity-40">
-            <i data-lucide="twitch" class="w-6 h-6"></i>
-            <i data-lucide="twitter" class="w-6 h-6"></i>
-            <i data-lucide="discord" class="w-6 h-6"></i>
-        </div>
-        <p class="text-slate-500 text-sm font-medium tracking-widest uppercase mb-2">
-            © 2026 G-CENTER MOBILE REPORT
-        </p>
-        <p class="text-slate-600 text-xs">
-            由遊戲愛好者專為玩家社群打造
+    <footer class="p-8 bg-slate-50 border-t border-slate-200 text-center">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+            由霓虹抽卡數據系統提供支援 &bull; 2024 NEONGACHA TERMINAL
         </p>
     </footer>
 
-    <!-- Toast Container -->
-    <div id="toast-container" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-4 pointer-events-none"></div>
-
+    <!-- 腳本邏輯 -->
     <script>
-        // Data Store
-        const GAMES = [
-            {
-                id: 'genshin',
-                name: '《原神領域》',
-                tag: 'RPG / 冒險',
-                description: '在提瓦特的廣袤大地展開旅程，揭開神靈的秘密。',
-                accentColor: 'blue',
-                icon: 'gamepad-2',
-                codes: [
-                    { code: 'GENSHIN2026', title: '2026 年度慶典禮包', items: '原石 x100, 摩拉 x50,000' },
-                    { code: 'NEWYEARGIFT', title: '新春限定體力補給', items: '脆弱樹脂 x2, 冒險家經驗 x20' }
-                ]
-            },
-            {
-                id: 'cyber',
-                name: '《賽博戰線》',
-                tag: 'FPS / 賽博龐克',
-                description: '在被霓虹淹沒的未來都市，為了生存與正義而戰。',
-                accentColor: 'fuchsia',
-                icon: 'cpu',
-                codes: [
-                    { code: 'CYBER777', title: '傳奇裝備箱', items: '紫色核心 x1, 能量飲料 x5' },
-                    { code: 'READYPLAYER1', title: '初始黑客包', items: '基礎組件 x100, 信用點 x10k' }
-                ]
-            }
+        // --- 常數設置 ---
+        const GAME_RATES = {
+            ZZZ: { baseRate: 0.006, softPity: 74, hardPity: 90, fiftyFifty: 0.5, weaponFiftyFifty: 0.75 },
+            HSR: { baseRate: 0.006, softPity: 74, hardPity: 90, fiftyFifty: 0.5, weaponFiftyFifty: 0.75 },
+            WUWA: { baseRate: 0.008, softPity: 65, hardPity: 80, fiftyFifty: 0.5, weaponGuaranteed: true }
+        };
+
+        const REDEEM_CODES = [
+            { game: 'ZZZ', code: 'ZENLESSGIFT', reward: '50 菲林' },
+            { game: 'ZZZ', code: 'ZZZFREEBIE', reward: '30 菲林' },
+            { game: 'WUWA', code: 'WUTHERINGGIFT', reward: '50 星聲' },
+            { game: 'WUWA', code: 'BLACKSHORES', reward: '100 星聲' },
+            { game: 'HSR', code: 'STARRAILGIFT', reward: '50 星瓊' },
+            { game: 'HSR', code: 'HSR32P6T', reward: '100 星瓊' },
+            { game: 'HSR', code: 'POMPOMGIFT', reward: '30 星瓊' }
         ];
 
-        // Rendering Engine
-        function renderGames() {
-            const container = document.getElementById('game-list');
-            
-            container.innerHTML = GAMES.map(game => {
-                const accentHex = game.accentColor === 'blue' ? '#3b82f6' : '#d946ef';
-                const accentClass = game.accentColor === 'blue' ? 'text-blue-400' : 'text-fuchsia-400';
-                const bgClass = game.accentColor === 'blue' ? 'bg-blue-500/10' : 'bg-fuchsia-500/10';
-                const borderHoverClass = game.accentColor === 'blue' ? 'hover:border-blue-500/30' : 'hover:border-fuchsia-500/30';
-                const glowClass = game.accentColor === 'blue' ? 'hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'hover:shadow-[0_0_30px_rgba(217,70,239,0.15)]';
+        let chart = null;
+        let currentRedeemGame = 'ZZZ';
 
-                return `
-                    <div class="glass rounded-[3rem] p-8 md:p-12 relative overflow-hidden group ${borderHoverClass} ${glowClass}">
-                        <!-- Top Header -->
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-                            <div class="flex items-center gap-6">
-                                <div class="w-16 h-16 rounded-[1.5rem] ${bgClass} border border-white/5 flex items-center justify-center ${accentClass} shadow-inner">
-                                    <i data-lucide="${game.icon}" class="w-8 h-8"></i>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-3 mb-1">
-                                        <h3 class="text-3xl font-black text-white">${game.name}</h3>
-                                        <span class="text-[10px] px-2 py-0.5 rounded-full border border-white/10 text-slate-500 font-bold uppercase tracking-wider">${game.tag}</span>
-                                    </div>
-                                    <p class="text-slate-500 font-medium">${game.description}</p>
-                                </div>
-                            </div>
-                            <i data-lucide="star" class="w-6 h-6 text-slate-700 hidden md:block"></i>
-                        </div>
+        // --- 核心引擎：蒙特卡洛模擬 ---
+        function runSimulation() {
+            const gameKey = document.getElementById('input-game').value;
+            const totalPulls = parseInt(document.getElementById('input-total-pulls').value) || 0;
+            const rates = GAME_RATES[gameKey];
 
-                        <!-- Codes Grid -->
-                        <div class="grid grid-cols-1 gap-5">
-                            ${game.codes.map(item => `
-                                <div class="relative flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6 p-6 rounded-[2rem] bg-black/40 border border-white/5 group/code hover:bg-black/60 transition-all duration-300">
-                                    <div class="flex items-center gap-5">
-                                        <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-slate-400 group-hover/code:text-white transition-colors">
-                                            <i data-lucide="gift" class="w-5 h-5"></i>
-                                        </div>
-                                        <div>
-                                            <div class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] mb-1">${item.title}</div>
-                                            <div class="text-xl font-mono font-bold text-white tracking-[0.1em]">${item.code}</div>
-                                            <div class="text-xs text-slate-600 mt-1 font-medium">${item.items}</div>
-                                        </div>
-                                    </div>
-                                    <button 
-                                        onclick="copyCode('${item.code}')" 
-                                        class="shine-button px-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm flex items-center justify-center gap-3 transition-all active:scale-95 whitespace-nowrap"
-                                    >
-                                        <i data-lucide="copy" class="w-4 h-4"></i>
-                                        <span>複製代碼</span>
-                                    </button>
-                                </div>
-                            `).join('')}
-                        </div>
+            const charGoal = {
+                enabled: document.getElementById('check-char-enabled').checked,
+                target: parseInt(document.getElementById('input-char-target').value) || 0,
+                pity: parseInt(document.getElementById('input-char-pity').value) || 0,
+                guaranteed: document.getElementById('check-char-guaranteed').checked
+            };
 
-                        <!-- Accent Decoration -->
-                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 blur-3xl rounded-full opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                    </div>
-                `;
-            }).join('');
-            
-            // Re-initialize icons
-            lucide.createIcons();
+            const weaponGoal = {
+                enabled: document.getElementById('check-weapon-enabled').checked,
+                target: parseInt(document.getElementById('input-weapon-target').value) || 0,
+                pity: parseInt(document.getElementById('input-weapon-pity').value) || 0,
+                guaranteed: document.getElementById('check-weapon-guaranteed').checked
+            };
+
+            const iterations = 2000;
+            const results = [];
+            let successfulSims = 0;
+
+            for (let i = 0; i < iterations; i++) {
+                let pullsUsed = 0;
+                
+                // 1. 角色模擬
+                let charFound = 0;
+                if (charGoal.enabled) {
+                    let pity = charGoal.pity;
+                    let guaranteed = charGoal.guaranteed;
+                    while (charFound < charGoal.target && pullsUsed < totalPulls) {
+                        pullsUsed++; pity++;
+                        let rate = rates.baseRate;
+                        if (pity >= rates.softPity) {
+                            rate += (1 - rates.baseRate) / (rates.hardPity - rates.softPity + 1) * (pity - rates.softPity + 1);
+                        }
+                        if (Math.random() < rate || pity >= rates.hardPity) {
+                            if (guaranteed || Math.random() < rates.fiftyFifty) {
+                                charFound++; guaranteed = false;
+                            } else { guaranteed = true; }
+                            pity = 0;
+                        }
+                    }
+                } else { charFound = charGoal.target; }
+
+                // 2. 武器模擬
+                let weaponFound = 0;
+                if (weaponGoal.enabled && charFound >= charGoal.target) {
+                    let pity = weaponGoal.pity;
+                    let guaranteed = weaponGoal.guaranteed;
+                    const wFifty = rates.weaponGuaranteed ? 1.0 : (rates.weaponFiftyFifty || 0.75);
+                    if (rates.weaponGuaranteed) guaranteed = true;
+
+                    while (weaponFound < weaponGoal.target && pullsUsed < totalPulls) {
+                        pullsUsed++; pity++;
+                        let rate = rates.baseRate + 0.001; // 武器基礎略高
+                        const wSoft = rates.softPity - 10;
+                        const wHard = rates.hardPity - 10;
+                        if (pity >= wSoft) {
+                            rate += (1 - rate) / (wHard - wSoft + 1) * (pity - wSoft + 1);
+                        }
+                        if (Math.random() < rate || pity >= wHard) {
+                            if (guaranteed || Math.random() < wFifty) {
+                                weaponFound++; guaranteed = false;
+                            } else { guaranteed = true; }
+                            pity = 0;
+                        }
+                    }
+                } else if (!weaponGoal.enabled) { weaponFound = weaponGoal.target; }
+
+                if (charFound >= charGoal.target && weaponFound >= weaponGoal.target) {
+                    results.push(pullsUsed);
+                    successfulSims++;
+                } else {
+                    results.push(totalPulls + 1);
+                }
+            }
+
+            // --- 處理統計資料 ---
+            const successfulPulls = results.filter(r => r <= totalPulls).sort((a, b) => a - b);
+            const probData = [];
+            const step = Math.max(1, Math.floor(totalPulls / 50));
+            for (let p = 1; p <= totalPulls; p += step) {
+                const chance = (results.filter(r => r <= p).length / iterations) * 100;
+                probData.push({ x: p, y: chance });
+            }
+
+            const avg = successfulPulls.length > 0 ? (successfulPulls.reduce((a, b) => a + b, 0) / successfulPulls.length) : 0;
+            const median = successfulPulls.length > 0 ? successfulPulls[Math.floor(successfulPulls.length / 2)] : 0;
+            const rate = (successfulSims / iterations) * 100;
+
+            updateUI(rate, Math.round(avg), median, probData, charGoal, weaponGoal);
         }
 
-        // Copy Feature
-        function copyCode(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`已複製兌換碼：<span class="font-mono font-bold text-blue-400">${text}</span>`);
-            }).catch(err => {
-                showToast('複製失敗，請手動複製', true);
+        function updateUI(rate, avg, median, probData, charGoal, weaponGoal) {
+            document.getElementById('res-success-rate').innerText = `${rate.toFixed(1)}%`;
+            document.getElementById('res-avg').innerText = `${avg} 抽`;
+            document.getElementById('res-median').innerText = `${median} 抽`;
+            
+            let comboText = '';
+            if (charGoal.enabled) comboText += `${charGoal.target}角色`;
+            if (charGoal.enabled && weaponGoal.enabled) comboText += ' + ';
+            if (weaponGoal.enabled) comboText += `${weaponGoal.target}武器`;
+            document.getElementById('res-combo').innerText = comboText || '無目標';
+
+            // 更新圖表
+            renderChart(probData);
+
+            // 處理卡片禁用狀態
+            document.getElementById('card-char').className = `bg-white p-6 border transition-all ${charGoal.enabled ? 'border-slate-200 opacity-100' : 'border-slate-100 opacity-40 border-dashed'}`;
+            document.getElementById('card-weapon').className = `bg-white p-6 border transition-all ${weaponGoal.enabled ? 'border-slate-200 opacity-100' : 'border-slate-100 opacity-40 border-dashed'}`;
+            
+            // 鳴潮特殊顯示
+            const isWuWa = document.getElementById('input-game').value === 'WUWA';
+            document.getElementById('wuwa-weapon-notice').style.display = isWuWa ? 'block' : 'none';
+            document.getElementById('weapon-guaranteed-box').style.display = isWuWa ? 'none' : 'block';
+        }
+
+        function renderChart(data) {
+            const ctx = document.getElementById('probChart').getContext('2d');
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: '達成機率 (%)',
+                        data: data,
+                        borderColor: '#d946ef',
+                        backgroundColor: (context) => {
+                            const chart = context.chart;
+                            const {ctx, chartArea} = chart;
+                            if (!chartArea) return null;
+                            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(217, 70, 239, 0.3)');
+                            gradient.addColorStop(1, 'rgba(217, 70, 239, 0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index', intersect: false,
+                            backgroundColor: '#0f172a',
+                            titleFont: { size: 10 }, bodyFont: { size: 12, weight: 'bold' },
+                            callbacks: { label: (ctx) => `${ctx.raw.y.toFixed(1)}% 機率` }
+                        }
+                    },
+                    scales: {
+                        x: { type: 'linear', grid: { display: false }, ticks: { font: { size: 10, family: 'JetBrains Mono' } } },
+                        y: { min: 0, max: 100, ticks: { callback: v => v + '%', font: { size: 10, family: 'JetBrains Mono' } } }
+                    }
+                }
             });
         }
 
-        // Toast Engine
-        function showToast(message, isError = false) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+        // --- 分頁與 UI 控制 ---
+        function switchTab(tab) {
+            const isCalc = tab === 'calc';
+            document.getElementById('pane-calc').style.display = isCalc ? 'block' : 'none';
+            document.getElementById('pane-redeem').style.display = isCalc ? 'none' : 'block';
             
-            toast.className = `toast-active flex items-center gap-4 px-8 py-5 glass border-white/10 rounded-[2rem] shadow-2xl pointer-events-auto min-w-[320px] mb-4`;
+            document.getElementById('btn-tab-calc').className = `pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all ${isCalc ? 'tab-active' : 'text-slate-300'}`;
+            document.getElementById('btn-tab-redeem').className = `pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all ${!isCalc ? 'tab-active' : 'text-slate-300'}`;
             
-            const icon = isError ? 'alert-circle' : 'check-circle';
-            const iconColor = isError ? 'text-rose-500' : 'text-blue-500';
-            const shadowColor = isError ? 'shadow-rose-500/20' : 'shadow-blue-500/20';
-            
-            toast.classList.add(shadowColor);
-            
-            toast.innerHTML = `
-                <div class="w-10 h-10 rounded-full ${isError ? 'bg-rose-500/10' : 'bg-blue-500/10'} flex items-center justify-center ${iconColor}">
-                    <i data-lucide="${icon}" class="w-6 h-6"></i>
-                </div>
-                <div class="flex-1">
-                    <p class="text-white text-sm font-medium leading-relaxed">${message}</p>
-                </div>
-            `;
-            
-            container.appendChild(toast);
-            lucide.createIcons();
+            document.getElementById('main-title').innerText = isCalc ? '戰略性抽卡計算' : '資產獲取終端';
+            document.getElementById('main-subtitle').innerText = isCalc ? '高精度蒙特卡洛概率模擬引擎' : '通用資源兌換系統終端';
+            document.getElementById('status-line').className = `h-1 w-12 ${isCalc ? 'bg-cyan-400' : 'bg-magenta-400'}`;
 
-            // Auto-remove
-            setTimeout(() => {
-                toast.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
-                toast.style.opacity = '0';
-                toast.style.transform = 'translate(-50%, -20px) scale(0.9)';
-                setTimeout(() => toast.remove(), 600);
-            }, 3000);
+            if (!isCalc) filterRedeem(currentRedeemGame);
         }
 
-        // Boot
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGames();
-        });
+        function filterRedeem(game) {
+            currentRedeemGame = game;
+            ['zzz', 'wuwa', 'hsr'].forEach(g => {
+                const btn = document.getElementById(`btn-game-${g}`);
+                const isActive = g.toUpperCase() === game;
+                btn.className = `px-6 py-2 text-xs font-bold uppercase border-b-2 transition-all ${isActive ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-400'}`;
+            });
+
+            const grid = document.getElementById('code-grid');
+            grid.innerHTML = '';
+            const codes = REDEEM_CODES.filter(c => c.game === game);
+
+            codes.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-slate-200 p-5 group hover:border-slate-400 transition-colors relative overflow-hidden';
+                
+                const accent = game === 'ZZZ' ? 'bg-cyan-400' : (game === 'WUWA' ? 'bg-magenta-400' : 'bg-lime-400');
+                
+                card.innerHTML = `
+                    <div class="absolute top-0 left-0 w-1 h-full ${accent}"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="mono font-bold text-lg text-slate-900">${c.code}</h3>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-tight">${c.reward}</p>
+                        </div>
+                        <div class="text-[10px] font-bold text-lime-500 bg-lime-50 px-2 py-0.5 rounded">有效</div>
+                    </div>
+                    <button onclick="handleRedeem('${c.game}', '${c.code}', this)" 
+                            class="w-full py-2 px-4 text-xs font-bold uppercase tracking-widest transition-all border border-slate-900 bg-slate-900 text-white hover:bg-slate-800">
+                        ${game === 'WUWA' ? '複製代碼' : '前往兌換'}
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function handleRedeem(game, code, btn) {
+            if (game === 'WUWA') {
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = btn.innerText;
+                    btn.innerText = '已複製！';
+                    btn.className = "w-full py-2 px-4 text-xs font-bold uppercase tracking-widest transition-all border border-lime-500 bg-lime-500 text-slate-900";
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.className = "w-full py-2 px-4 text-xs font-bold uppercase tracking-widest transition-all border border-slate-900 bg-slate-900 text-white hover:bg-slate-800";
+                    }, 2000);
+                });
+            } else if (game === 'ZZZ') {
+                window.open(`https://zenless.hoyoverse.com/redemption?code=${code}`, '_blank');
+            } else {
+                window.open(`https://hsr.hoyoverse.com/gift?code=${code}`, '_blank');
+            }
+        }
+
+        function handleInputChange() {
+            runSimulation();
+        }
+
+        // --- 初始化 ---
+        window.onload = () => {
+            runSimulation();
+            // 註冊 Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi.JhZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ID0+IHsgfSk7').catch(() => {});
+            }
+        };
     </script>
 </body>
 </html>
