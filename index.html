@@ -364,7 +364,7 @@
                 chart_axis_x: '横軸：リソース消費量',
                 chart_axis_y: '縦軸：累計達成確率 (%)',
                 chart_sample: 'サンプル數：2,000 回の獨立シミュレーション',
-                footer_note: 'コミュニティデータ驅動 • すべての確率は參考値です',
+                footer_note: 'コミュニティ數據驅動 • すべての確率は參考値です',
                 unit_pulls: '連',
                 unit_char: 'キャラ',
                 unit_weapon: '武器',
@@ -404,8 +404,16 @@
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) el.innerText = t[key];
             });
+
+            // 修正：切換語言時保持正確的分頁標題文字
+            const isCalc = document.getElementById('pane-calc').style.display !== 'none';
+            document.getElementById('main-title').innerText = isCalc ? t.tab_calc : t.tab_redeem;
+
             handleGameChange();
             if (chart) executeCalculation();
+            
+            // 修正：同步更新兌換碼頁面的按鈕文字與狀態
+            filterRedeem(currentRedeemGame);
         }
 
         function executeCalculation() {
@@ -584,11 +592,13 @@
             currentRedeemGame = game;
             ['zzz', 'wuwa', 'hsr'].forEach(g => {
                 const btn = document.getElementById(`btn-game-${g}`);
+                if (!btn) return;
                 const isActive = g.toUpperCase() === game;
                 btn.className = `px-8 py-3 text-xs font-bold uppercase border-b-2 transition-all ${isActive ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-400'}`;
             });
             const grid = document.getElementById('code-grid');
             const t = TRANSLATIONS[currentLang];
+            if (!grid) return;
             grid.innerHTML = '';
             const codes = REDEEM_CODES.filter(c => c.game === game);
             codes.forEach(c => {
