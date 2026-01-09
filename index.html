@@ -7,12 +7,40 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-L4TSREBRPY');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>抽卡算算 - Gacha Calc</title>
+    
+    <!-- SEO 基礎優化 -->
+    <title>抽卡算算 - 絕區零 | 鳴潮 | 星穹鐵道 抽卡模擬計算機 & 兌換碼中心</title>
+    <meta name="description" content="專業的米池抽卡機率計算機。支援絕區零 (ZZZ)、鳴潮 (WuWa)、崩壞：星穹鐵道 (HSR) 抽卡模擬，精確計算限定角色與武器的真實期望值與達成機率，並彙整最新遊戲兌換碼禮包資訊。">
+    <meta name="keywords" content="米池,星穹鐵道,絕區零,鳴潮,抽卡,抽卡模擬,抽卡計算,兌換碼,ZZZ,HSR,WuWa,機率計算">
+    <link rel="canonical" href="https://gacha-calc.example.com/">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="抽卡算算 - 絕區零 | 鳴潮 | 星穹鐵道 抽卡模擬計算器">
+    <meta property="og:description" content="最準確的米池抽卡模擬器。一鍵計算 ZZZ、鳴潮、星穹鐵道資源分配，並領取最新禮包兌換碼。">
+    <meta property="og:url" content="https://gacha-calc.example.com/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- 結構化數據 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "抽卡算算 Gacha Calc",
+      "operatingSystem": "Web",
+      "applicationCategory": "Utility",
+      "description": "提供絕區零、鳴潮、星穹鐵道的抽卡機率模擬與兌換碼領取功能。",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+    </script>
+
     <!-- 外部庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -21,9 +49,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 全局字體放大 20% */
         html { font-size: 120%; }
-        
         :root {
             --cyan: #22d3ee;
             --magenta: #d946ef;
@@ -35,40 +61,14 @@
         .cyber-shadow-magenta { box-shadow: 6px 6px 0px var(--magenta); }
         .cyber-shadow-lime { box-shadow: 4px 4px 0px var(--lime); }
         .tab-active { border-bottom: 4px solid #0f172a; color: #0f172a; }
-        
-        /* 動畫 */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
-
-        .btn-cyber {
-            position: relative;
-            transition: all 0.2s;
-            overflow: hidden;
-        }
-        .btn-cyber:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px var(--cyan);
-        }
-        
-        /* 自定義滾動條 */
+        .btn-cyber { position: relative; transition: all 0.2s; overflow: hidden; }
+        .btn-cyber:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--cyan); }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
-        /* 語系切換器樣式 */
-        .lang-select {
-            appearance: none;
-            background: transparent;
-            border: 1px solid #e2e8f0;
-            padding: 4px 28px 4px 12px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.2s;
-        }
+        .lang-select { appearance: none; background: transparent; border: 1px solid #e2e8f0; padding: 4px 28px 4px 12px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; outline: none; transition: all 0.2s; }
         .lang-select:hover { border-color: var(--cyan); }
     </style>
 <script type="importmap">
@@ -83,10 +83,9 @@
 </head>
 <body class="text-slate-900">
 
-    <!-- 導航欄 -->
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-slate-900 flex items-center justify-center rotate-45">
+            <div class="w-8 h-8 bg-slate-900 flex items-center justify-center rotate-45" aria-hidden="true">
                 <span class="text-white text-[10px] font-black -rotate-45">NG</span>
             </div>
             <div>
@@ -95,9 +94,8 @@
             </div>
         </div>
         
-        <!-- 語系切換器 -->
         <div class="relative flex items-center">
-            <select id="lang-switcher" class="lang-select cyber-shadow-cyan bg-white">
+            <select id="lang-switcher" class="lang-select cyber-shadow-cyan bg-white" title="Select Language">
                 <option value="zh-TW">繁體中文</option>
                 <option value="en">English</option>
                 <option value="ja">日本語</option>
@@ -107,29 +105,24 @@
     </header>
 
     <main class="max-w-7xl mx-auto p-6 lg:p-12">
-        
-        <!-- 頁籤切換 -->
-        <div class="flex gap-8 border-b border-slate-200 mb-8">
+        <nav class="flex gap-8 border-b border-slate-200 mb-8" aria-label="Main Navigation">
             <button onclick="switchTab('calc')" id="btn-tab-calc" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all tab-active" data-i18n="tab_calc">抽卡計算機</button>
             <button onclick="switchTab('redeem')" id="btn-tab-redeem" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all text-slate-300" data-i18n="tab_redeem">兌換碼中心</button>
-        </div>
+        </nav>
 
-        <!-- 標題 -->
-        <div class="mb-10">
+        <section class="mb-10">
             <h2 id="main-title" class="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2" data-i18n="tab_calc">抽卡計算機</h2>
             <div class="flex items-center gap-2">
                 <div id="status-line" class="h-1 w-12 bg-cyan-400"></div>
                 <p id="main-subtitle" class="text-xs font-medium text-slate-400 uppercase tracking-widest"></p>
             </div>
-        </div>
+        </section>
 
-        <!-- 計算機面板 -->
-        <section id="pane-calc" class="animate-fade">
+        <article id="pane-calc" class="animate-fade">
             <div class="space-y-8">
-                <!-- 全局基礎設置 -->
                 <div class="bg-white p-6 border border-slate-200 cyber-shadow-cyan grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_protocol">選擇協議</label>
+                        <label for="input-game" class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_protocol">選擇遊戲 (星穹鐵道/絕區零/鳴潮)</label>
                         <select id="input-game" class="w-full bg-slate-50 border border-slate-200 p-3 outline-none focus:border-cyan-400 font-bold" onchange="handleGameChange()">
                             <option value="ZZZ" data-i18n="game_zzz">絕區零 (Zenless Zone Zero)</option>
                             <option value="WUWA" data-i18n="game_wuwa">鳴潮 (Wuthering Waves)</option>
@@ -137,28 +130,25 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_pulls">投入抽數</label>
+                        <label for="input-total-pulls" class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_pulls">投入抽數 (資源預算)</label>
                         <input id="input-total-pulls" type="number" value="160" class="w-full bg-slate-50 border border-slate-200 p-3 mono text-xl font-black text-cyan-600 outline-none focus:border-cyan-400">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- 角色目標 -->
                     <div id="card-char" class="bg-white p-6 border border-slate-200 transition-all">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-slate-900">
-                                <span class="w-2 h-2 bg-cyan-400"></span>
-                                <span data-i18n="card_char_title">角色抽取目標</span>
-                            </h3>
-                        </div>
+                        <h3 class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-slate-900 mb-6">
+                            <span class="w-2 h-2 bg-cyan-400"></span>
+                            <span data-i18n="card_char_title">角色抽取目標</span>
+                        </h3>
                         <div class="space-y-6">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_target_qty">目標取得數量</label>
+                                    <label for="input-char-target" class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_target_qty">目標取得數量</label>
                                     <input id="input-char-target" type="number" value="1" class="w-full bg-slate-50 border border-slate-200 p-3 mono text-lg font-bold outline-none focus:border-cyan-400">
                                 </div>
                                 <div>
-                                    <label class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_current_pity">當前已抽次數</label>
+                                    <label for="input-char-pity" class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_current_pity">當前已抽次數 (水位)</label>
                                     <input id="input-char-pity" type="number" value="0" class="w-full bg-slate-50 border border-slate-200 p-3 mono text-lg font-bold outline-none focus:border-cyan-400">
                                 </div>
                             </div>
@@ -169,22 +159,19 @@
                         </div>
                     </div>
 
-                    <!-- 武器目標 -->
                     <div id="card-weapon" class="bg-white p-6 border border-slate-200 transition-all">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 id="weapon-title" class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-slate-900">
-                                <span class="w-2 h-2 bg-magenta-400"></span>
-                                <span data-i18n="weapon_type_zzz">音擎抽取目標</span>
-                            </h3>
-                        </div>
+                        <h3 id="weapon-title" class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-slate-900 mb-6">
+                            <span class="w-2 h-2 bg-magenta-400"></span>
+                            <span data-i18n="weapon_type_zzz">音擎抽取目標</span>
+                        </h3>
                         <div class="space-y-6">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_target_qty">目標取得數量</label>
+                                    <label for="input-weapon-target" class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_target_qty">目標取得數量</label>
                                     <input id="input-weapon-target" type="number" value="1" class="w-full bg-slate-50 border border-slate-200 p-3 mono text-lg font-bold outline-none focus:border-magenta-400">
                                 </div>
                                 <div>
-                                    <label class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_current_pity">當前已抽次數</label>
+                                    <label for="input-weapon-pity" class="block text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="label_current_pity">當前已抽次數</label>
                                     <input id="input-weapon-pity" type="number" value="0" class="w-full bg-slate-50 border border-slate-200 p-3 mono text-lg font-bold outline-none focus:border-magenta-400">
                                 </div>
                             </div>
@@ -202,83 +189,61 @@
                     </div>
                 </div>
 
-                <!-- 計算按鈕 -->
                 <div class="flex justify-center pt-4">
                     <button onclick="executeCalculation()" class="w-full max-w-2xl bg-slate-900 text-white font-black py-5 uppercase tracking-[0.4em] cyber-shadow-cyan btn-cyber hover:bg-slate-800 transition-all flex items-center justify-center gap-3">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        <span data-i18n="btn_calculate">開始計算</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span data-i18n="btn_calculate">開始計算期望值</span>
                     </button>
                 </div>
 
-                <!-- 結果展示區 -->
                 <div id="results-area" class="hidden animate-fade space-y-6">
                     <div class="bg-white p-6 border border-slate-200 cyber-shadow-lime">
                         <h2 class="text-sm font-black tracking-widest uppercase mb-8 flex items-center gap-2">
                             <span class="w-2 h-2 bg-lime-400"></span>
-                            <span data-i18n="res_title">計算抽取結果</span>
+                            <span data-i18n="res_title">計算抽取結果數據分析</span>
                         </h2>
-                        
-                        <!-- 統計數據卡片 -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                             <div class="bg-slate-900 text-white p-5 border-l-4 border-magenta-500">
-                                <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest mb-1" data-i18n="res_success_rate">完成目標機率</p>
+                                <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest mb-1" data-i18n="res_success_rate">完成預算內目標機率</p>
                                 <p id="res-success-rate" class="text-3xl font-black mono text-magenta-400">0.0%</p>
                             </div>
                             <div class="bg-slate-50 p-5 border border-slate-100">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1" data-i18n="res_avg">平均消耗</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1" data-i18n="res_avg">真實期望值 (平均消耗)</p>
                                 <p id="res-avg" class="text-2xl font-black mono text-slate-800">0 抽</p>
                             </div>
                             <div class="bg-slate-50 p-5 border border-slate-100">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1" data-i18n="res_median">完成目標中位數 (50% 達成)</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1" data-i18n="res_median">真實期望值 (50% 達成中位數)</p>
                                 <p id="res-median" class="text-2xl font-black mono text-slate-800">0 抽</p>
                             </div>
                         </div>
-
-                        <!-- 圖表本體 -->
                         <div class="h-[400px] w-full relative">
                             <canvas id="probChart"></canvas>
-                        </div>
-                        
-                        <div class="mt-6 flex flex-wrap justify-between items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-t border-slate-100 pt-6">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 bg-cyan-400"></span>
-                                <span data-i18n="chart_axis_x">橫軸：資源消耗 (抽)</span>
-                                <span class="w-2 h-2 bg-magenta-400 ml-4"></span>
-                                <span data-i18n="chart_axis_y">縱軸：累計達成機率 (%)</span>
-                            </div>
-                            <div>
-                                <span data-i18n="chart_sample">計算樣本：2,000 個獨立隨機模擬點</span>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </article>
 
-        <!-- 兌換碼面板 -->
-        <section id="pane-redeem" class="hidden animate-fade">
+        <article id="pane-redeem" class="hidden animate-fade">
             <div class="max-w-4xl mx-auto">
-                <div class="flex justify-center gap-4 mb-10">
-                    <button onclick="filterRedeem('ZZZ')" id="btn-game-zzz" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-slate-900 text-slate-900 transition-all" data-i18n="game_zzz_short">絕區零</button>
-                    <button onclick="filterRedeem('WUWA')" id="btn-game-wuwa" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400 transition-all" data-i18n="game_wuwa_short">鳴潮</button>
-                    <button onclick="filterRedeem('HSR')" id="btn-game-hsr" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400 transition-all" data-i18n="game_hsr_short">星穹鐵道</button>
+                <div class="flex justify-center flex-wrap gap-4 mb-10">
+                    <button onclick="filterRedeem('ZZZ')" id="btn-game-zzz" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-slate-900 text-slate-900 transition-all" data-i18n="game_zzz_short">絕區零兌換碼</button>
+                    <button onclick="filterRedeem('WUWA')" id="btn-game-wuwa" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400 transition-all" data-i18n="game_wuwa_short">鳴潮兌換碼</button>
+                    <button onclick="filterRedeem('HSR')" id="btn-game-hsr" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400 transition-all" data-i18n="game_hsr_short">星穹鐵道兌換碼</button>
                 </div>
-                <div id="code-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- JS 動態生成 -->
-                </div>
+                <div id="code-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
             </div>
-        </section>
+        </article>
     </main>
 
     <footer class="p-12 bg-slate-50 border-t border-slate-200 text-center mt-20">
         <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.3em] mb-2">GACHA CALC DATA PROTOCOL v3.2</p>
         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]" data-i18n="footer_note">
-            由社群數據驅動 &bull; 所有機率僅供參考
+            由社群數據驅動 • 所有機率僅供參考
         </p>
     </footer>
 
     <script>
-        // --- 多語系字典 ---
         const TRANSLATIONS = {
             'zh-TW': {
                 nav_title: '抽卡算算',
@@ -304,9 +269,9 @@
                 wuwa_notice: '鳴潮武器協議：當前卡池 100% 必中，無需勾選保底。',
                 btn_calculate: '開始計算',
                 res_title: '計算抽取結果',
-                res_success_rate: '完成目標機率',
-                res_avg: '平均消耗',
-                res_median: '完成目標中位數 (50% 達成)',
+                res_success_rate: '完成預算內目標機率',
+                res_avg: '真實期望值 (平均消耗)',
+                res_median: '真實期望值 (50% 達成中位數)',
                 res_config: '當前目標配置',
                 chart_axis_x: '橫軸：資源消耗 (抽)',
                 chart_axis_y: '縱軸：累計達成機率 (%)',
@@ -348,9 +313,9 @@
                 wuwa_notice: 'WuWa Weapon Protocol: 100% Guaranteed. No pity needed.',
                 btn_calculate: 'Calculate Now',
                 res_title: 'Simulation Results',
-                res_success_rate: 'Success Rate',
-                res_avg: 'Average Cost',
-                res_median: 'Median Cost (50%)',
+                res_success_rate: 'Budget Success Rate',
+                res_avg: 'True Expectancy (Avg Cost)',
+                res_median: 'True Expectancy (Median 50%)',
                 res_config: 'Current Setup',
                 chart_axis_x: 'X: Total Pulls',
                 chart_axis_y: 'Y: Cumulative Probability (%)',
@@ -392,9 +357,9 @@
                 wuwa_notice: '鳴潮武器プロトコル：100% 確定、保底不要。',
                 btn_calculate: '計算開始',
                 res_title: '分析結果出力',
-                res_success_rate: '目標達成率',
-                res_avg: '平均コスト',
-                res_median: '中央値 (50% 達成)',
+                res_success_rate: '予算内達成率',
+                res_avg: '真實期待値 (平均)',
+                res_median: '真實期待値 (50% 達成)',
                 res_config: '現在の構成',
                 chart_axis_x: '横軸：リソース消費量',
                 chart_axis_y: '縦軸：累計達成確率 (%)',
@@ -415,18 +380,9 @@
         };
 
         let currentLang = 'zh-TW';
+        let chart = null;
+        let currentRedeemGame = 'ZZZ';
 
-        function updateUI() {
-            const t = TRANSLATIONS[currentLang];
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.innerText = t[key];
-            });
-            handleGameChange(); // 更新動態文字
-            if (chart) executeCalculation(); // 如果已有圖表，重新計算以更新文字
-        }
-
-        // --- 核心設定與資料 ---
         const GAME_RATES = {
             ZZZ: { baseRate: 0.006, weaponBaseRate: 0.008, softPity: 73, hardPity: 90, fiftyFifty: 0.5, weaponFiftyFifty: 0.75 },
             HSR: { baseRate: 0.006, weaponBaseRate: 0.008, softPity: 73, hardPity: 90, fiftyFifty: 0.5, weaponFiftyFifty: 0.75 },
@@ -434,29 +390,24 @@
         };
 
         const REDEEM_CODES = [
-            // ZZZ
             { game: 'ZZZ', code: 'ShunguangWinterGift', reward: '限定獎勵' },
             { game: 'ZZZ', code: 'ZHAOISFREE', reward: '限定獎勵' },
             { game: 'ZZZ', code: 'ZZZ25MINA', reward: '限定獎勵' },
-            { game: 'ZZZ', code: 'ZZZCREATOR25', reward: '限定獎勵' },
-            { game: 'ZZZ', code: 'ZZZ2026', reward: '限定獎勵' },
-            { game: 'ZZZ', code: 'MEETTHEVOIDHUNTER', reward: '限定獎勵' },
             { game: 'ZZZ', code: 'ZENLESSGIFT', reward: '50 Polychromes' },
-            // WUWA
             { game: 'WUWA', code: 'WUTHERINGGIFT', reward: '50 Astrite' },
-            // HSR
-            { game: 'HSR', code: 'THEDAHLIA', reward: '限定獎勵' },
-            { game: 'HSR', code: 'OMEGA', reward: '限定獎勵' },
-            { game: 'HSR', code: 'CREATIONNYMPH', reward: '限定獎勵' },
-            { game: 'HSR', code: 'FAREWELL', reward: '限定獎勵' },
-            { game: 'HSR', code: 'IFYOUAREREADINGTHIS', reward: '限定獎勵' },
             { game: 'HSR', code: 'STARRAILGIFT', reward: '50 Stellar Jade' }
         ];
 
-        let chart = null;
-        let currentRedeemGame = 'ZZZ';
+        function updateUI() {
+            const t = TRANSLATIONS[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+            handleGameChange();
+            if (chart) executeCalculation();
+        }
 
-        // --- 核心模擬邏輯 ---
         function executeCalculation() {
             const resultsArea = document.getElementById('results-area');
             resultsArea.classList.remove('hidden');
@@ -466,7 +417,7 @@
 
         function runSimulation() {
             const gameKey = document.getElementById('input-game').value;
-            const totalPulls = parseInt(document.getElementById('input-total-pulls').value) || 0;
+            const budget = parseInt(document.getElementById('input-total-pulls').value) || 0;
             const rates = GAME_RATES[gameKey];
             const t = TRANSLATIONS[currentLang];
 
@@ -484,17 +435,17 @@
 
             const iterations = 2000;
             const results = [];
-            let successfulSims = 0;
+            let successfulWithinBudget = 0;
 
             for (let i = 0; i < iterations; i++) {
                 let pullsUsed = 0;
                 let charFound = 0;
+                let weaponFound = 0;
                 
-                // 模擬角色池
                 if (charGoal.target > 0) {
                     let pity = charGoal.pity;
                     let guaranteed = charGoal.guaranteed;
-                    while (charFound < charGoal.target && pullsUsed < totalPulls) {
+                    while (charFound < charGoal.target) {
                         pullsUsed++; pity++;
                         let rate = rates.baseRate;
                         if (pity >= rates.softPity) {
@@ -507,19 +458,16 @@
                             pity = 0;
                         }
                     }
-                } else { charFound = 0; }
+                }
 
-                // 模擬武器池
-                let weaponFound = 0;
-                if (weaponGoal.target > 0 && (charGoal.target === 0 || charFound >= charGoal.target)) {
+                if (weaponGoal.target > 0) {
                     let pity = weaponGoal.pity;
                     let guaranteed = weaponGoal.guaranteed;
                     const wFifty = rates.weaponGuaranteed ? 1.0 : (rates.weaponFiftyFifty || 0.75);
                     if (rates.weaponGuaranteed) guaranteed = true;
 
-                    while (weaponFound < weaponGoal.target && pullsUsed < totalPulls) {
+                    while (weaponFound < weaponGoal.target) {
                         pullsUsed++; pity++;
-                        // 使用正確的武器池基礎機率 (ZZZ/HSR 為 0.8%)
                         let rate = rates.weaponBaseRate || 0.008; 
                         const wSoft = rates.softPity - 10;
                         const wHard = rates.hardPity - 10;
@@ -533,42 +481,32 @@
                             pity = 0;
                         }
                     }
-                } else { weaponFound = 0; }
-
-                // 判斷是否達成所有設定目標 (數量必須達到設定值)
-                if (charFound >= charGoal.target && weaponFound >= weaponGoal.target) {
-                    results.push(pullsUsed);
-                    successfulSims++;
-                } else {
-                    results.push(totalPulls + 1);
                 }
+                results.push(pullsUsed);
+                if (pullsUsed <= budget) successfulWithinBudget++;
             }
 
-            const successfulPulls = results.filter(r => r <= totalPulls).sort((a, b) => a - b);
+            results.sort((a, b) => a - b);
+            const average = results.reduce((a, b) => a + b, 0) / iterations;
+            const median = results[Math.floor(iterations / 2)];
+            const successRate = (successfulWithinBudget / iterations) * 100;
+            const maxDisplayX = Math.max(budget, Math.round(median * 1.2));
             const probData = [];
-            const step = Math.max(1, Math.floor(totalPulls / 50));
-            for (let p = 1; p <= totalPulls; p += step) {
-                const chance = (results.filter(r => r <= p).length / iterations) * 100;
-                probData.push({ x: p, y: chance });
+            const step = Math.max(1, Math.floor(maxDisplayX / 50));
+            for (let p = 1; p <= maxDisplayX; p += step) {
+                const count = results.filter(r => r <= p).length;
+                probData.push({ x: p, y: (count / iterations) * 100 });
             }
-
-            const avg = successfulPulls.length > 0 ? (successfulPulls.reduce((a, b) => a + b, 0) / successfulPulls.length) : 0;
-            const median = successfulPulls.length > 0 ? successfulPulls[Math.floor(successfulPulls.length / 2)] : 0;
-            const rate = (successfulSims / iterations) * 100;
-
-            updateResultUI(rate, Math.round(avg), median, probData, charGoal, weaponGoal, t);
+            updateResultUI(successRate, Math.round(average), median, probData, charGoal, weaponGoal, t);
         }
 
         function updateResultUI(rate, avg, median, probData, charGoal, weaponGoal, t) {
             document.getElementById('res-success-rate').innerText = `${rate.toFixed(1)}%`;
             document.getElementById('res-avg').innerText = `${avg} ${t.unit_pulls}`;
             document.getElementById('res-median').innerText = `${median} ${t.unit_pulls}`;
-            
             renderChart(probData, t);
-
-            // 根據目標數量是否大於 0 來切換卡片外觀
-            document.getElementById('card-char').className = `bg-white p-6 border transition-all ${charGoal.target > 0 ? 'border-slate-200' : 'border-slate-100 opacity-40 border-dashed'}`;
-            document.getElementById('card-weapon').className = `bg-white p-6 border transition-all ${weaponGoal.target > 0 ? 'border-slate-200' : 'border-slate-100 opacity-40 border-dashed'}`;
+            document.getElementById('card-char').className = `bg-white p-6 border border-slate-200 transition-all`;
+            document.getElementById('card-weapon').className = `bg-white p-6 border border-slate-200 transition-all`;
         }
 
         function handleGameChange() {
@@ -577,7 +515,6 @@
             const isWuWa = gameKey === 'WUWA';
             document.getElementById('wuwa-weapon-notice').style.display = isWuWa ? 'flex' : 'none';
             document.getElementById('weapon-guaranteed-box').style.display = isWuWa ? 'none' : 'block';
-            
             const weaponTitle = document.getElementById('weapon-title');
             const indicator = '<span class="w-2 h-2 bg-magenta-400"></span>';
             const langKey = gameKey === 'ZZZ' ? 'weapon_type_zzz' : (gameKey === 'WUWA' ? 'weapon_type_wuwa' : 'weapon_type_hsr');
@@ -587,7 +524,6 @@
         function renderChart(data, t) {
             const ctx = document.getElementById('probChart').getContext('2d');
             if (chart) chart.destroy();
-
             chart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -632,19 +568,15 @@
             });
         }
 
-        // --- 分頁與兌換碼邏輯 ---
         function switchTab(tab) {
             const isCalc = tab === 'calc';
             const t = TRANSLATIONS[currentLang];
             document.getElementById('pane-calc').style.display = isCalc ? 'block' : 'none';
             document.getElementById('pane-redeem').style.display = isCalc ? 'none' : 'block';
-            
             document.getElementById('btn-tab-calc').className = `pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all ${isCalc ? 'tab-active' : 'text-slate-300'}`;
             document.getElementById('btn-tab-redeem').className = `pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all ${!isCalc ? 'tab-active' : 'text-slate-300'}`;
-            
             document.getElementById('main-title').innerText = isCalc ? t.tab_calc : t.tab_redeem;
             document.getElementById('status-line').className = `h-1 w-12 ${isCalc ? 'bg-cyan-400' : 'bg-magenta-400'}`;
-
             if (!isCalc) filterRedeem(currentRedeemGame);
         }
 
@@ -655,17 +587,14 @@
                 const isActive = g.toUpperCase() === game;
                 btn.className = `px-8 py-3 text-xs font-bold uppercase border-b-2 transition-all ${isActive ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-400'}`;
             });
-
             const grid = document.getElementById('code-grid');
             const t = TRANSLATIONS[currentLang];
             grid.innerHTML = '';
             const codes = REDEEM_CODES.filter(c => c.game === game);
-
             codes.forEach(c => {
                 const card = document.createElement('div');
                 card.className = 'bg-white border border-slate-200 p-6 group hover:border-slate-400 transition-colors relative overflow-hidden animate-fade';
                 const accent = game === 'ZZZ' ? 'bg-cyan-400' : (game === 'WUWA' ? 'bg-magenta-400' : 'bg-lime-400');
-                
                 card.innerHTML = `
                     <div class="absolute top-0 left-0 w-1.5 h-full ${accent}"></div>
                     <div class="flex justify-between items-start mb-6">
@@ -703,28 +632,14 @@
             }
         }
 
-        // --- 初始化 & 語系偵測 ---
         window.onload = () => {
-            // 偵測語系
             const savedLang = localStorage.getItem('user_lang');
             const browserLang = navigator.language || navigator.userLanguage;
-            
-            if (savedLang) {
-                currentLang = savedLang;
-            } else {
-                if (browserLang.includes('zh')) currentLang = 'zh-TW';
-                else if (browserLang.includes('ja')) currentLang = 'ja';
-                else currentLang = 'en';
-            }
-            
+            if (savedLang) { currentLang = savedLang; } 
+            else { if (browserLang.includes('zh')) currentLang = 'zh-TW'; else if (browserLang.includes('ja')) currentLang = 'ja'; else currentLang = 'en'; }
             const switcher = document.getElementById('lang-switcher');
             switcher.value = currentLang;
-            switcher.addEventListener('change', (e) => {
-                currentLang = e.target.value;
-                localStorage.setItem('user_lang', currentLang);
-                updateUI();
-            });
-
+            switcher.addEventListener('change', (e) => { currentLang = e.target.value; localStorage.setItem('user_lang', currentLang); updateUI(); });
             handleGameChange();
             updateUI();
         };
