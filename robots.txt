@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gacha.how01.com/sitemap.xml
