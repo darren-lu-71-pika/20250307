@@ -12,20 +12,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO 基礎優化 -->
-    <title>抽卡算算 - 絕區零 | 鳴潮 | 星穹鐵道 抽卡模擬計算機 & 兌換碼中心</title>
-    <meta name="description" content="專業的米池抽卡機率計算機。支援絕區零 (ZZZ)、鳴潮 (WuWa)、崩壞：星穹鐵道 (HSR) 抽卡模擬，精確計算限定角色與武器的真實期望值與達成機率，並彙整最新遊戲兌換碼禮包資訊。">
-    <meta name="keywords" content="米池,星穹鐵道,絕區零,鳴潮,抽卡,抽卡模擬,抽卡計算,兌換碼,ZZZ,HSR,WuWa,機率計算">
-    <link rel="canonical" href="https://gacha-calc.example.com/">
+    <!-- SEO 優化 -->
+    <title>抽卡算算 - 絕區零/鳴潮/星穹鐵道 抽卡模擬機與機率計算</title>
+    <meta name="description" content="最專業的米池抽卡機率計算機。支援絕區零 (ZZZ)、鳴潮 (WuWa)、崩壞：星穹鐵道 (HSR) 抽卡模擬，精確計算限定角色與武器的真實期望值、資源分配與達成機率。">
+    <meta name="keywords" content="抽卡模擬,抽卡計算,星穹鐵道,絕區零,鳴潮,米池,機率計算,期望值,Gacha Calc">
     
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="抽卡算算 - 絕區零 | 鳴潮 | 星穹鐵道 抽卡模擬計算器">
-    <meta property="og:description" content="最準確的米池抽卡模擬器。一鍵計算 ZZZ、鳴潮、星穹鐵道資源分配，並領取最新禮包兌換碼。">
-    <meta property="og:url" content="https://gacha-calc.example.com/">
+    <meta property="og:title" content="抽卡算算 - 絕區零/鳴潮/星穹鐵道 抽卡模擬機">
+    <meta property="og:description" content="一鍵計算 ZZZ、鳴潮、星穹鐵道抽卡資源分配，精準預測保底機率。">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- 結構化數據 (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -33,11 +30,7 @@
       "name": "抽卡算算 Gacha Calc",
       "operatingSystem": "Web",
       "applicationCategory": "Utility",
-      "description": "提供絕區零、鳴潮、星穹鐵道的抽卡機率模擬與兌換碼領取功能。",
-      "offers": {
-        "@type": "Offer",
-        "price": "0"
-      }
+      "description": "提供絕區零、鳴潮、星穹鐵道的抽卡機率模擬與資源期望值計算。"
     }
     </script>
 
@@ -106,15 +99,15 @@
 
     <main class="max-w-7xl mx-auto p-6 lg:p-12">
         <nav class="flex gap-8 border-b border-slate-200 mb-8" aria-label="Main Navigation">
-            <button onclick="switchTab('calc')" id="btn-tab-calc" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all tab-active" data-i18n="tab_calc">抽卡計算機</button>
-            <button onclick="switchTab('redeem')" id="btn-tab-redeem" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all text-slate-300" data-i18n="tab_redeem">兌換碼中心</button>
+            <a href="index.html" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all tab-active" data-i18n="tab_calc">抽卡計算機</a>
+            <a href="redeem.html" class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all text-slate-300 hover:text-slate-900" data-i18n="tab_redeem">兌換碼中心</a>
         </nav>
 
         <section class="mb-10">
             <h2 id="main-title" class="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2" data-i18n="tab_calc">抽卡計算機</h2>
             <div class="flex items-center gap-2">
                 <div id="status-line" class="h-1 w-12 bg-cyan-400"></div>
-                <p id="main-subtitle" class="text-xs font-medium text-slate-400 uppercase tracking-widest"></p>
+                <p id="main-subtitle" class="text-xs font-medium text-slate-400 uppercase tracking-widest" data-i18n="nav_tagline">數據終端 v3.0</p>
             </div>
         </section>
 
@@ -223,17 +216,6 @@
                 </div>
             </div>
         </article>
-
-        <article id="pane-redeem" class="hidden animate-fade">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex justify-center flex-wrap gap-4 mb-10">
-                    <button onclick="filterRedeem('ZZZ')" id="btn-game-zzz" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-slate-900 text-slate-900 transition-all" data-i18n="game_zzz_short">絕區零兌換碼</button>
-                    <button onclick="filterRedeem('WUWA')" id="btn-game-wuwa" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400 transition-all" data-i18n="game_wuwa_short">鳴潮兌換碼</button>
-                    <button onclick="filterRedeem('HSR')" id="btn-game-hsr" class="px-8 py-3 text-xs font-bold uppercase border-b-2 border-transparent text-slate-400 transition-all" data-i18n="game_hsr_short">星穹鐵道兌換碼</button>
-                </div>
-                <div id="code-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-            </div>
-        </article>
     </main>
 
     <footer class="p-12 bg-slate-50 border-t border-slate-200 text-center mt-20">
@@ -246,6 +228,7 @@
     <script>
         const TRANSLATIONS = {
             'zh-TW': {
+                page_title: '抽卡算算 - 絕區零/鳴潮/星穹鐵道 抽卡模擬機與機率計算',
                 nav_title: '抽卡算算',
                 nav_tagline: '數據終端 v3.0',
                 tab_calc: '抽卡計算機',
@@ -255,9 +238,6 @@
                 game_zzz: '絕區零 (Zenless Zone Zero)',
                 game_wuwa: '鳴潮 (Wuthering Waves)',
                 game_hsr: '崩壞：星穹鐵道 (Honkai: Star Rail)',
-                game_zzz_short: '絕區零',
-                game_wuwa_short: '鳴潮',
-                game_hsr_short: '星穹鐵道',
                 card_char_title: '角色抽取目標',
                 label_target_qty: '目標取得數量',
                 label_current_pity: '當前已抽次數',
@@ -266,122 +246,81 @@
                 weapon_type_zzz: '音擎抽取目標',
                 weapon_type_wuwa: '武器抽取目標',
                 weapon_type_hsr: '光錐抽取目標',
-                wuwa_notice: '鳴潮武器協議：當前卡池 100% 必中，無需勾選保底。',
+                wuwa_notice: '鳴潮武器協議：當前卡池 100% 必中。',
                 btn_calculate: '開始計算',
                 res_title: '計算抽取結果',
-                res_success_rate: '完成預算內目標機率',
-                res_avg: '真實期望值 (平均消耗)',
-                res_median: '真實期望值 (50% 達成中位數)',
-                res_config: '當前目標配置',
-                chart_axis_x: '橫軸：資源消耗 (抽)',
-                chart_axis_y: '縱軸：累計達成機率 (%)',
-                chart_sample: '計算樣本：2,000 個獨立隨機模擬點',
-                footer_note: '由社群數據驅動 • 所有機率僅供參考',
+                res_success_rate: '預算成功率',
+                res_avg: '平均消耗',
+                res_median: '50% 達成中位數',
                 unit_pulls: '抽',
-                unit_char: '角色',
-                unit_weapon: '武器',
-                unit_engine: '音擎',
-                unit_cone: '光錐',
-                redeem_btn_official: '前往官方兌換頁面',
-                redeem_btn_copy: '複製代碼內容',
-                redeem_copied: '代碼已複製！',
-                redeem_verified: 'Verified',
                 chart_label: '達成機率 (%)',
-                chart_tooltip_chance: '累計達成率'
+                chart_tooltip_chance: '累計達成率',
+                footer_note: '由社群數據驅動 • 所有機率僅供參考'
             },
             'en': {
+                page_title: 'Gacha Calc - ZZZ/WuWa/HSR Gacha Simulator & Probability Calculator',
                 nav_title: 'Gacha Calc',
-                nav_tagline: 'Data Terminal v3.0',
-                tab_calc: 'Gacha Calculator',
+                nav_tagline: 'Terminal v3.0',
+                tab_calc: 'Calculator',
                 tab_redeem: 'Redeem Codes',
                 label_protocol: 'Protocol',
-                label_pulls: 'Pulls to Invest',
-                game_zzz: 'Zenless Zone Zero (ZZZ)',
-                game_wuwa: 'Wuthering Waves (WuWa)',
-                game_hsr: 'Honkai: Star Rail (HSR)',
-                game_zzz_short: 'ZZZ',
-                game_wuwa_short: 'WuWa',
-                game_hsr_short: 'HSR',
+                label_pulls: 'Pulls',
+                game_zzz: 'Zenless Zone Zero',
+                game_wuwa: 'Wuthering Waves',
+                game_hsr: 'Honkai: Star Rail',
                 card_char_title: 'Character Target',
-                label_target_qty: 'Target Quantity',
-                label_current_pity: 'Current Pity',
+                label_target_qty: 'Target Qty',
+                label_current_pity: 'Pity Count',
                 check_guaranteed_lim: 'Guaranteed (Next Limited)',
-                check_guaranteed_weapon: 'Guaranteed (Carryover/Targeting)',
+                check_guaranteed_weapon: 'Guaranteed (Carryover)',
                 weapon_type_zzz: 'W-Engine Target',
                 weapon_type_wuwa: 'Weapon Target',
                 weapon_type_hsr: 'Light Cone Target',
-                wuwa_notice: 'WuWa Weapon Protocol: 100% Guaranteed. No pity needed.',
-                btn_calculate: 'Calculate Now',
+                wuwa_notice: 'WuWa Weapon: 100% Guaranteed.',
+                btn_calculate: 'Calculate',
                 res_title: 'Simulation Results',
-                res_success_rate: 'Budget Success Rate',
-                res_avg: 'True Expectancy (Avg Cost)',
-                res_median: 'True Expectancy (Median 50%)',
-                res_config: 'Current Setup',
-                chart_axis_x: 'X: Total Pulls',
-                chart_axis_y: 'Y: Cumulative Probability (%)',
-                chart_sample: 'Sample Size: 2,000 iterations',
-                footer_note: 'Powered by community data • All results are estimates',
+                res_success_rate: 'Success Rate',
+                res_avg: 'Average Cost',
+                res_median: 'Median (50%)',
                 unit_pulls: 'pulls',
-                unit_char: 'Char',
-                unit_weapon: 'Wep',
-                unit_engine: 'Engine',
-                unit_cone: 'Cone',
-                redeem_btn_official: 'Official Redemption Site',
-                redeem_btn_copy: 'Copy Code',
-                redeem_copied: 'CODE COPIED!',
-                redeem_verified: 'Verified',
                 chart_label: 'Probability (%)',
-                chart_tooltip_chance: 'Cumulative Chance'
+                chart_tooltip_chance: 'Cumulative Chance',
+                footer_note: 'Estimates only'
             },
             'ja': {
+                page_title: 'ガチャ計算 - ゼンゼロ/鳴潮/スタレ ガチャシミュレーター',
                 nav_title: 'ガチャ計算',
-                nav_tagline: '數據終端 v3.0',
-                tab_calc: 'ガチャシミュ',
+                nav_tagline: 'ターミナル v3.0',
+                tab_calc: 'シミュ',
                 tab_redeem: 'シリアルコード',
-                label_protocol: 'プロトコル選擇',
+                label_protocol: 'プロトコル',
                 label_pulls: '投入予定',
-                game_zzz: 'ゼンレスゾーンゼロ (ZZZ)',
-                game_wuwa: '鳴潮 (WuWa)',
-                game_hsr: '崩壞：スターレイル (HSR)',
-                game_zzz_short: 'ゼンゼロ',
-                game_wuwa_short: '鳴潮',
-                game_hsr_short: 'スタレ',
+                game_zzz: 'ゼンレスゾーンゼロ',
+                game_wuwa: '鳴潮',
+                game_hsr: '崩壊：スターレイル',
                 card_char_title: 'キャラ獲得目標',
-                label_target_qty: '目標獲得數',
+                label_target_qty: '目標獲得数',
                 label_current_pity: '現在のはまり',
                 check_guaranteed_lim: 'すり抜け済み（次回確定）',
-                check_guaranteed_weapon: 'すり抜け済み（引繼ぎ/定軌）',
+                check_guaranteed_weapon: 'すり抜け済み',
                 weapon_type_zzz: '音エンジン獲得目標',
                 weapon_type_wuwa: '武器獲得目標',
                 weapon_type_hsr: '光円錐獲得目標',
-                wuwa_notice: '鳴潮武器プロトコル：100% 確定、保底不要。',
+                wuwa_notice: '鳴潮武器：100% 確定。',
                 btn_calculate: '計算開始',
-                res_title: '分析結果出力',
-                res_success_rate: '予算内達成率',
-                res_avg: '真實期待値 (平均)',
-                res_median: '真實期待値 (50% 達成)',
-                res_config: '現在の構成',
-                chart_axis_x: '横軸：リソース消費量',
-                chart_axis_y: '縦軸：累計達成確率 (%)',
-                chart_sample: 'サンプル數：2,000 回の獨立シミュレーション',
-                footer_note: 'コミュニティ數據驅動 • すべての確率は參考値です',
+                res_title: '分析結果',
+                res_success_rate: '達成率',
+                res_avg: '平均コスト',
+                res_median: '50% 達成',
                 unit_pulls: '連',
-                unit_char: 'キャラ',
-                unit_weapon: '武器',
-                unit_engine: '音エンジン',
-                unit_cone: '光円錐',
-                redeem_btn_official: '公式サイトで交換',
-                redeem_btn_copy: 'コードをコピー',
-                redeem_copied: 'コピー完了！',
-                redeem_verified: '確認済み',
                 chart_label: '達成確率 (%)',
-                chart_tooltip_chance: '累計達成確率'
+                chart_tooltip_chance: '累計達成確率',
+                footer_note: '参考値です'
             }
         };
 
-        let currentLang = 'zh-TW';
+        let currentLang = localStorage.getItem('user_lang') || 'zh-TW';
         let chart = null;
-        let currentRedeemGame = 'ZZZ';
 
         const GAME_RATES = {
             ZZZ: { baseRate: 0.006, weaponBaseRate: 0.008, softPity: 73, hardPity: 90, fiftyFifty: 0.5, weaponFiftyFifty: 0.75 },
@@ -389,31 +328,15 @@
             WUWA: { baseRate: 0.008, weaponBaseRate: 0.008, softPity: 65, hardPity: 80, fiftyFifty: 0.5, weaponGuaranteed: true }
         };
 
-        const REDEEM_CODES = [
-            { game: 'ZZZ', code: 'ShunguangWinterGift', reward: '限定獎勵' },
-            { game: 'ZZZ', code: 'ZHAOISFREE', reward: '限定獎勵' },
-            { game: 'ZZZ', code: 'ZZZ25MINA', reward: '限定獎勵' },
-            { game: 'ZZZ', code: 'ZENLESSGIFT', reward: '50 Polychromes' },
-            { game: 'WUWA', code: 'WUTHERINGGIFT', reward: '50 Astrite' },
-            { game: 'HSR', code: 'STARRAILGIFT', reward: '50 Stellar Jade' }
-        ];
-
         function updateUI() {
             const t = TRANSLATIONS[currentLang];
+            document.title = t.page_title;
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) el.innerText = t[key];
             });
-
-            // 修正：切換語言時保持正確的分頁標題文字
-            const isCalc = document.getElementById('pane-calc').style.display !== 'none';
-            document.getElementById('main-title').innerText = isCalc ? t.tab_calc : t.tab_redeem;
-
             handleGameChange();
             if (chart) executeCalculation();
-            
-            // 修正：同步更新兌換碼頁面的按鈕文字與狀態
-            filterRedeem(currentRedeemGame);
         }
 
         function executeCalculation() {
@@ -473,7 +396,6 @@
                     let guaranteed = weaponGoal.guaranteed;
                     const wFifty = rates.weaponGuaranteed ? 1.0 : (rates.weaponFiftyFifty || 0.75);
                     if (rates.weaponGuaranteed) guaranteed = true;
-
                     while (weaponFound < weaponGoal.target) {
                         pullsUsed++; pity++;
                         let rate = rates.weaponBaseRate || 0.008; 
@@ -505,16 +427,14 @@
                 const count = results.filter(r => r <= p).length;
                 probData.push({ x: p, y: (count / iterations) * 100 });
             }
-            updateResultUI(successRate, Math.round(average), median, probData, charGoal, weaponGoal, t);
+            updateResultUI(successRate, Math.round(average), median, probData, t);
         }
 
-        function updateResultUI(rate, avg, median, probData, charGoal, weaponGoal, t) {
+        function updateResultUI(rate, avg, median, probData, t) {
             document.getElementById('res-success-rate').innerText = `${rate.toFixed(1)}%`;
             document.getElementById('res-avg').innerText = `${avg} ${t.unit_pulls}`;
             document.getElementById('res-median').innerText = `${median} ${t.unit_pulls}`;
             renderChart(probData, t);
-            document.getElementById('card-char').className = `bg-white p-6 border border-slate-200 transition-all`;
-            document.getElementById('card-weapon').className = `bg-white p-6 border border-slate-200 transition-all`;
         }
 
         function handleGameChange() {
@@ -576,81 +496,14 @@
             });
         }
 
-        function switchTab(tab) {
-            const isCalc = tab === 'calc';
-            const t = TRANSLATIONS[currentLang];
-            document.getElementById('pane-calc').style.display = isCalc ? 'block' : 'none';
-            document.getElementById('pane-redeem').style.display = isCalc ? 'none' : 'block';
-            document.getElementById('btn-tab-calc').className = `pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all ${isCalc ? 'tab-active' : 'text-slate-300'}`;
-            document.getElementById('btn-tab-redeem').className = `pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all ${!isCalc ? 'tab-active' : 'text-slate-300'}`;
-            document.getElementById('main-title').innerText = isCalc ? t.tab_calc : t.tab_redeem;
-            document.getElementById('status-line').className = `h-1 w-12 ${isCalc ? 'bg-cyan-400' : 'bg-magenta-400'}`;
-            if (!isCalc) filterRedeem(currentRedeemGame);
-        }
-
-        function filterRedeem(game) {
-            currentRedeemGame = game;
-            ['zzz', 'wuwa', 'hsr'].forEach(g => {
-                const btn = document.getElementById(`btn-game-${g}`);
-                if (!btn) return;
-                const isActive = g.toUpperCase() === game;
-                btn.className = `px-8 py-3 text-xs font-bold uppercase border-b-2 transition-all ${isActive ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-400'}`;
-            });
-            const grid = document.getElementById('code-grid');
-            const t = TRANSLATIONS[currentLang];
-            if (!grid) return;
-            grid.innerHTML = '';
-            const codes = REDEEM_CODES.filter(c => c.game === game);
-            codes.forEach(c => {
-                const card = document.createElement('div');
-                card.className = 'bg-white border border-slate-200 p-6 group hover:border-slate-400 transition-colors relative overflow-hidden animate-fade';
-                const accent = game === 'ZZZ' ? 'bg-cyan-400' : (game === 'WUWA' ? 'bg-magenta-400' : 'bg-lime-400');
-                card.innerHTML = `
-                    <div class="absolute top-0 left-0 w-1.5 h-full ${accent}"></div>
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h3 class="mono font-bold text-xl text-slate-900 tracking-tight">${c.code}</h3>
-                            <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">${c.reward}</p>
-                        </div>
-                        <div class="text-[10px] font-black text-lime-600 bg-lime-50 px-2 py-1 uppercase tracking-widest border border-lime-100">${t.redeem_verified}</div>
-                    </div>
-                    <button onclick="handleRedeem('${c.game}', '${c.code}', this)" 
-                            class="w-full py-3 px-4 text-xs font-black uppercase tracking-[0.2em] transition-all border border-slate-900 bg-slate-900 text-white hover:bg-slate-800 cyber-shadow-cyan">
-                        ${game === 'WUWA' ? t.redeem_btn_copy : t.redeem_btn_official}
-                    </button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function handleRedeem(game, code, btn) {
-            const t = TRANSLATIONS[currentLang];
-            if (game === 'WUWA') {
-                navigator.clipboard.writeText(code).then(() => {
-                    const originalText = btn.innerText;
-                    btn.innerText = t.redeem_copied;
-                    btn.className = "w-full py-3 px-4 text-xs font-black uppercase tracking-[0.2em] transition-all border border-lime-500 bg-lime-500 text-slate-900";
-                    setTimeout(() => {
-                        btn.innerText = originalText;
-                        btn.className = "w-full py-3 px-4 text-xs font-black uppercase tracking-[0.2em] transition-all border border-slate-900 bg-slate-900 text-white hover:bg-slate-800 cyber-shadow-cyan";
-                    }, 2000);
-                });
-            } else if (game === 'ZZZ') {
-                window.open(`https://zenless.hoyoverse.com/redemption?code=${code}`, '_blank');
-            } else {
-                window.open(`https://hsr.hoyoverse.com/gift?code=${code}`, '_blank');
-            }
-        }
-
         window.onload = () => {
-            const savedLang = localStorage.getItem('user_lang');
-            const browserLang = navigator.language || navigator.userLanguage;
-            if (savedLang) { currentLang = savedLang; } 
-            else { if (browserLang.includes('zh')) currentLang = 'zh-TW'; else if (browserLang.includes('ja')) currentLang = 'ja'; else currentLang = 'en'; }
             const switcher = document.getElementById('lang-switcher');
             switcher.value = currentLang;
-            switcher.addEventListener('change', (e) => { currentLang = e.target.value; localStorage.setItem('user_lang', currentLang); updateUI(); });
-            handleGameChange();
+            switcher.addEventListener('change', (e) => {
+                currentLang = e.target.value;
+                localStorage.setItem('user_lang', currentLang);
+                updateUI();
+            });
             updateUI();
         };
     </script>
