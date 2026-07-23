@@ -92,6 +92,7 @@
                 <option value="zh-TW">繁體中文</option>
                 <option value="en">English</option>
                 <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
             </select>
             <div class="absolute right-2 pointer-events-none text-[8px] text-slate-400">▼</div>
         </div>
@@ -316,6 +317,36 @@
                 chart_label: '達成確率 (%)',
                 chart_tooltip_chance: '累計達成確率',
                 footer_note: '参考値です'
+            },
+            'ko': {
+                page_title: '가챠 계산기 - 젠레스 존 제로/명조/붕괴: 스타레일 확률 계산',
+                nav_title: '가챠 계산기',
+                nav_tagline: '데이터 터미널 v3.0',
+                tab_calc: '가챠 계산',
+                tab_redeem: '리딤 코드',
+                label_protocol: '게임 선택',
+                label_pulls: '뽑기 예산',
+                game_zzz: '젠레스 존 제로',
+                game_wuwa: '명조: 워더링 웨이브',
+                game_hsr: '붕괴: 스타레일',
+                card_char_title: '캐릭터 획득 목표',
+                label_target_qty: '목표 획득 수',
+                label_current_pity: '현재 스택',
+                check_guaranteed_lim: '확정 상태 (다음 한정 캐릭터 확정)',
+                check_guaranteed_weapon: '확정 상태 (스택/궤도 계승)',
+                weapon_type_zzz: 'W-엔진 획득 목표',
+                weapon_type_wuwa: '무기 획득 목표',
+                weapon_type_hsr: '광추 획득 목표',
+                wuwa_notice: '명조 무기 배너: 현재 픽업 무기 100% 확정.',
+                btn_calculate: '계산 시작',
+                res_title: '가챠 분석 결과',
+                res_success_rate: '예산 내 성공 확률',
+                res_avg: '평균 소모량',
+                res_median: '50% 달성 중앙값',
+                unit_pulls: '회',
+                chart_label: '달성 확률 (%)',
+                chart_tooltip_chance: '누적 달성 확률',
+                footer_note: '커뮤니티 데이터 기반 • 모든 확률은 참고용입니다'
             }
         };
 
@@ -330,6 +361,7 @@
 
         function updateUI() {
             const t = TRANSLATIONS[currentLang];
+            document.documentElement.lang = currentLang;
             document.title = t.page_title;
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
