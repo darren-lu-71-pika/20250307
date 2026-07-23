@@ -11,11 +11,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="application-name" content="抽卡算算">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon.png">
+    <link rel="manifest" href="/site.webmanifest">
     
     <!-- SEO 優化 -->
     <title>抽卡算算 - 絕區零/鳴潮/星穹鐵道 抽卡模擬機與機率計算</title>
     <meta name="description" content="最專業的米池抽卡機率計算機。支援絕區零 (ZZZ)、鳴潮 (WuWa)、崩壞：星穹鐵道 (HSR) 抽卡模擬，精確計算限定角色與武器的真實期望值、資源分配與達成機率。">
-    <meta name="keywords" content="抽卡模擬,抽卡計算,星穹鐵道,絕區零,鳴潮,米池,機率計算,期望值,Gacha Calc">
     <link rel="canonical" href="https://gacha.healthlooker.com/">
     
     <!-- Open Graph -->
@@ -23,24 +26,53 @@
     <meta property="og:title" content="抽卡算算 - 絕區零/鳴潮/星穹鐵道 抽卡模擬機">
     <meta property="og:description" content="一鍵計算 ZZZ、鳴潮、星穹鐵道抽卡資源分配，精準預測保底機率。">
     <meta property="og:url" content="https://gacha.healthlooker.com/">
+    <meta property="og:site_name" content="抽卡算算">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:image" content="https://gacha.healthlooker.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="抽卡算算—抽卡機率計算與資源分析">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="抽卡算算 - 抽卡機率計算與資源分析">
+    <meta name="twitter:description" content="計算絕區零、鳴潮與崩壞：星穹鐵道的抽卡資源與達成機率。">
+    <meta name="twitter:image" content="https://gacha.healthlooker.com/assets/og-card.png">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "抽卡算算 Gacha Calc",
-      "operatingSystem": "Web",
-      "applicationCategory": "Utility",
-      "description": "提供絕區零、鳴潮、星穹鐵道的抽卡機率模擬與資源期望值計算。"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://gacha.healthlooker.com/#website",
+          "url": "https://gacha.healthlooker.com/",
+          "name": "抽卡算算",
+          "inLanguage": ["zh-TW", "en", "ja", "ko"]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://gacha.healthlooker.com/#app",
+          "url": "https://gacha.healthlooker.com/",
+          "name": "抽卡算算 Gacha Calc",
+          "operatingSystem": "Web",
+          "applicationCategory": "UtilitiesApplication",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TWD"
+          },
+          "description": "提供絕區零、鳴潮、崩壞：星穹鐵道的抽卡機率模擬與資源期望值計算。"
+        }
+      ]
     }
     </script>
 
     <!-- 外部庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -66,15 +98,6 @@
         .lang-select { appearance: none; background: transparent; border: 1px solid #e2e8f0; padding: 4px 28px 4px 12px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; outline: none; transition: all 0.2s; }
         .lang-select:hover { border-color: var(--cyan); }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "recharts": "https://esm.sh/recharts@^3.6.0",
-    "react/": "https://esm.sh/react@^19.2.3/"
-  }
-}
-</script>
 </head>
 <body class="text-slate-900">
 
@@ -84,7 +107,7 @@
                 <span class="text-white text-[10px] font-black -rotate-45">NG</span>
             </div>
             <div>
-                <h1 class="text-sm font-black tracking-tighter uppercase leading-none" data-i18n="nav_title">抽卡算算</h1>
+                <div class="text-sm font-black tracking-tighter uppercase leading-none" data-i18n="nav_title">抽卡算算</div>
                 <p class="text-[10px] text-cyan-500 font-bold uppercase tracking-widest" data-i18n="nav_tagline">數據終端 v3.0</p>
             </div>
         </div>
@@ -107,7 +130,7 @@
         </nav>
 
         <section class="mb-10">
-            <h2 id="main-title" class="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2" data-i18n="tab_calc">抽卡計算機</h2>
+            <h1 id="main-title" class="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2" data-i18n="tab_calc">抽卡計算機</h1>
             <div class="flex items-center gap-2">
                 <div id="status-line" class="h-1 w-12 bg-cyan-400"></div>
                 <p id="main-subtitle" class="text-xs font-medium text-slate-400 uppercase tracking-widest" data-i18n="nav_tagline">數據終端 v3.0</p>
