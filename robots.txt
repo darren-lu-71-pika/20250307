@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gacha.lookforward.cc/sitemap.xml
+Sitemap: https://gacha.healthlooker.com/sitemap.xml
